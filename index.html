@@ -307,7 +307,7 @@ h2,.hero h1,.hero .lede,.greet{text-shadow:0 0 28px var(--bg),0 0 60px var(--bg)
 .school:hover .crest,.school.on .crest{transform:translateY(-3px) scale(1.04);box-shadow:inset 0 0 0 1px rgba(0,0,0,.06),0 0 0 1px var(--accent),0 24px 40px -18px #000}
 .school h3{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.4vw,46px);line-height:1}
 .school p{color:var(--muted);font-size:15px;margin-top:8px}
-.school .badge{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:5px 10px;border-radius:var(--r-pill)}
+.school .badge{display:table;margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:5px 10px;border-radius:var(--r-pill)}
 .school .loc{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right;padding-top:10px;white-space:nowrap}
 
 /* TOOLKIT */
@@ -415,6 +415,39 @@ html[lang=ja] .kpi .num small{font-size:.3em}
 .brandlogo{width:auto;height:64px;padding:0;overflow:hidden;border-radius:14px;box-shadow:0 0 0 1px var(--line-strong),0 18px 34px -18px #000}
 .brandlogo img{height:100%;width:auto;max-width:none;max-height:none}
 @media (max-width:900px){.brandlogo{width:auto;height:46px;border-radius:11px}}
+
+/* languages: an accordion of five panels; the open one shows the greeting, the level and a gauge */
+.langs2{display:flex;gap:10px;height:300px}
+.langs2 .lang{all:unset;box-sizing:border-box;position:relative;flex:1 1 0;min-width:0;display:block;border-radius:18px;overflow:hidden;cursor:pointer;border:1px solid var(--line);background:color-mix(in oklab,var(--bg) 55%,transparent);transition:flex .6s var(--ease),border-color .4s,background .4s}
+.langs2 .lang.on{flex:6 1 0;border-color:var(--la);background:linear-gradient(150deg,color-mix(in oklab,var(--la) 20%,transparent),color-mix(in oklab,var(--bg) 60%,transparent) 70%)}
+.langs2 .lang:focus-visible{outline:2px solid var(--la);outline-offset:3px}
+.langs2 .ring{position:absolute;top:16px;right:14px;width:40px;height:40px;transform:rotate(-90deg)}
+.langs2 .ring circle{fill:none;stroke-width:3}
+.langs2 .ring .bg{stroke:var(--line-strong)}
+.langs2 .ring .fg{stroke:var(--la);stroke-linecap:round;stroke-dasharray:113.1;stroke-dashoffset:113.1;transition:stroke-dashoffset 1.4s var(--ease) .2s}
+.panel.in .langs2 .ring .fg{stroke-dashoffset:calc(113.1px * (100 - var(--p)) / 100)}
+.langs2 .lg-code{position:absolute;top:26px;left:16px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--la)}
+.langs2 .lang:not(.on) .ring{right:50%;transform:translateX(50%) rotate(-90deg);top:auto;bottom:16px;width:34px;height:34px}
+.langs2 .lang:not(.on) .lg-code{left:0;right:0;text-align:center}
+.langs2 .lg-v{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-90deg);white-space:nowrap;font-family:var(--serif);font-size:24px;color:var(--muted);transition:opacity .3s,color .3s}
+.langs2 .lang:hover .lg-v{color:var(--paper)}
+.langs2 .lang.on .lg-v{opacity:0}
+.langs2 .lg-open{position:absolute;left:26px;right:20px;bottom:24px;display:flex;flex-direction:column;gap:4px;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .5s var(--ease);pointer-events:none;white-space:nowrap}
+.langs2 .lang.on .lg-open{opacity:1;transform:none;transition-delay:.25s}
+.langs2 .lg-hello{font-family:var(--serif);font-style:italic;font-size:clamp(36px,3.8vw,56px);line-height:1.05;color:var(--la)}
+.langs2 .lg-name{font-family:var(--serif);font-size:26px;line-height:1.1;margin-top:8px}
+.langs2 .lg-lvl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+html[lang=ja] .langs2 .lg-hello{font-style:normal}
+html[lang=ja] .langs2 .lg-lvl{font-family:var(--sans)}
+@media (max-width:900px){
+  .langs2{flex-direction:column;height:auto}
+  .langs2 .lang{flex:none;height:58px;transition:height .6s var(--ease),border-color .4s,background .4s}
+  .langs2 .lang.on{flex:none;height:210px}
+  .langs2 .lg-v{left:64px;top:29px;transform:translateY(-50%);font-size:20px}
+  .langs2 .lang:not(.on) .ring{right:14px;top:12px;bottom:auto;transform:rotate(-90deg)}
+  .langs2 .lang:not(.on) .lg-code{left:16px;right:auto;top:22px}
+  .langs2 .lg-open{left:18px}
+}
 </style>
 </head>
 <body>
@@ -546,7 +579,6 @@ html[lang=ja] .kpi .num small{font-size:.3em}
         </ul>
       </div>
       <div class="tags reveal" data-i18n-list="ch3.tags"></div>
-      <div class="photo reveal"><img data-auto src="assets/photos/swisslife.jpg" alt="At Swiss Life, Lille"><div class="lines"></div><span class="glyph">Rebrand</span><span class="label">Swiss Life · Lille</span></div>
       </div>
     </article>
 
@@ -563,7 +595,6 @@ html[lang=ja] .kpi .num small{font-size:.3em}
         </ul>
       </div>
       <div class="tags reveal" data-i18n-list="ch4.tags"></div>
-      <div class="photo reveal"><img data-auto src="assets/photos/stellantis.jpg" alt="At Stellantis, Paris"><div class="lines"></div><span class="glyph">+7 pts</span><span class="label">Stellantis · Paris</span></div>
       </div>
     </article>
 
@@ -580,7 +611,6 @@ html[lang=ja] .kpi .num small{font-size:.3em}
         </ul>
       </div>
       <div class="tags reveal" data-i18n-list="ch5.tags"></div>
-      <div class="photo reveal"><img data-auto src="assets/photos/muji.jpg" alt="At MUJI, Paris"><div class="lines"></div><span class="glyph">無印良品</span><span class="label">MUJI · Paris</span></div>
       </div>
     </article>
   </section>
@@ -598,12 +628,12 @@ html[lang=ja] .kpi .num small{font-size:.3em}
         </div>
         <div class="school" data-city="Lille" data-lat="50.63" data-lon="3.06" data-tz="Europe/Paris" data-accent="#e2b33b">
           <span class="crest"><img src="assets/logos/edhec.png" alt="EDHEC Business School logo"></span>
-          <div><span class="yr">2022–26</span><h3 data-i18n="edu2.name">EDHEC Business School</h3><p data-i18n="edu2.p">BBA · Major in Marketing, specialisation in Marketing Intelligence &amp; Innovation</p><span class="shot"><img data-auto src="assets/photos/edhec.jpg" alt="EDHEC campus, Lille"><span class="cap" data-i18n="edu.edhec.cap"></span></span></div>
+          <div><span class="yr">2022–26</span><h3 data-i18n="edu2.name">EDHEC Business School</h3><p data-i18n="edu2.p">BBA · Major in Marketing, specialisation in Marketing Intelligence &amp; Innovation</p><span class="badge" data-i18n="edu2.badge">#2 BBA in France · Challenges 2026</span><span class="shot"><img data-auto src="assets/photos/edhec.jpg" alt="EDHEC campus, Lille"><span class="cap" data-i18n="edu.edhec.cap"></span></span></div>
           <span class="loc" data-i18n="edu2.loc">Lille, France</span>
         </div>
         <div class="school" data-city="Shenzhen" data-lat="22.54" data-lon="114.06" data-tz="Asia/Shanghai" data-accent="#b993ff">
           <span class="crest"><img src="assets/logos/cuhk.png" alt="The Chinese University of Hong Kong, Shenzhen logo"></span>
-          <div><span class="yr" data-i18n="edu3.yr">Fall 2024</span><h3 data-i18n="edu3.name">CUHK Shenzhen</h3><p data-i18n="edu3.p">Exchange semester · Big Data, Digital Customer Analytics (R), Pricing Strategy, SQL, Mandarin</p><span class="shot"><img data-auto src="assets/photos/cuhk.jpg" alt="Welcome day at CUHK Shenzhen, 2024"><span class="cap" data-i18n="edu.cuhk.cap"></span></span></div>
+          <div><span class="yr" data-i18n="edu3.yr">Fall 2024</span><h3 data-i18n="edu3.name">CUHK Shenzhen</h3><p data-i18n="edu3.p">Exchange semester · Big Data, Digital Customer Analytics (R), Pricing Strategy, SQL, Mandarin</p><span class="badge" data-i18n="edu3.badge">CUHK · #18 worldwide · QS 2027</span><span class="shot"><img data-auto src="assets/photos/cuhk.jpg" alt="Welcome day at CUHK Shenzhen, 2024"><span class="cap" data-i18n="edu.cuhk.cap"></span></span></div>
           <span class="loc" data-i18n="edu3.loc">Shenzhen, China</span>
         </div>
       </div></div>
@@ -619,13 +649,37 @@ html[lang=ja] .kpi .num small{font-size:.3em}
       <div class="grid2">
         <div class="panel reveal" data-panel>
           <div class="hint" data-i18n="tk.hint">Hover a language</div>
-          <div class="say" id="say">こんにちは</div>
-          <div class="langs">
-            <div class="lang" data-say="Bonjour" data-fx="paris" data-accent="#7d9bff"><span class="name" data-i18n="lang.fr">French</span><span class="meter"><i data-w="100"></i></span><span class="lvl" data-i18n="lvl.fr">Native</span></div>
-            <div class="lang" data-say="Hello" data-fx="rings" data-accent="#d9b38c"><span class="name" data-i18n="lang.en">English</span><span class="meter"><i data-w="100"></i></span><span class="lvl" data-i18n="lvl.en">C1</span></div>
-            <div class="lang on" data-say="こんにちは" data-fx="fuji" data-accent="#ff9ebb"><span class="name" data-i18n="lang.ja">Japanese</span><span class="meter"><i data-w="74"></i></span><span class="lvl" data-i18n="lvl.ja">JLPT N3 · N2 exam Dec 2026</span></div>
-            <div class="lang" data-say="Hola" data-fx="sol" data-accent="#ffb347"><span class="name" data-i18n="lang.es">Spanish</span><span class="meter"><i data-w="50"></i></span><span class="lvl" data-i18n="lvl.es">B1</span></div>
-            <div class="lang" data-say="你好" data-fx="ink" data-accent="#ff6b5a"><span class="name" data-i18n="lang.zh">Mandarin</span><span class="meter"><i data-w="28"></i></span><span class="lvl" data-i18n="lvl.zh">HSK 2</span></div>
+          <div class="langs2">
+            <button class="lang" data-say="Bonjour" data-fx="paris" data-accent="#7d9bff" style="--la:#7d9bff;--p:100">
+              <svg class="ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="bg" cx="22" cy="22" r="18"/><circle class="fg" cx="22" cy="22" r="18"/></svg>
+              <span class="lg-code">FR</span>
+              <span class="lg-v" data-i18n="lang.fr"></span>
+              <span class="lg-open"><span class="lg-hello">Bonjour</span><span class="lg-name" data-i18n="lang.fr"></span><span class="lg-lvl" data-i18n="lvl.fr"></span></span>
+            </button>
+            <button class="lang" data-say="Hello" data-fx="rings" data-accent="#d9b38c" style="--la:#d9b38c;--p:100">
+              <svg class="ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="bg" cx="22" cy="22" r="18"/><circle class="fg" cx="22" cy="22" r="18"/></svg>
+              <span class="lg-code">EN</span>
+              <span class="lg-v" data-i18n="lang.en"></span>
+              <span class="lg-open"><span class="lg-hello">Hello</span><span class="lg-name" data-i18n="lang.en"></span><span class="lg-lvl" data-i18n="lvl.en"></span></span>
+            </button>
+            <button class="lang on" data-say="こんにちは" data-fx="fuji" data-accent="#ff9ebb" style="--la:#ff9ebb;--p:74">
+              <svg class="ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="bg" cx="22" cy="22" r="18"/><circle class="fg" cx="22" cy="22" r="18"/></svg>
+              <span class="lg-code">日本</span>
+              <span class="lg-v" data-i18n="lang.ja"></span>
+              <span class="lg-open"><span class="lg-hello">こんにちは</span><span class="lg-name" data-i18n="lang.ja"></span><span class="lg-lvl" data-i18n="lvl.ja"></span></span>
+            </button>
+            <button class="lang" data-say="Hola" data-fx="sol" data-accent="#ffb347" style="--la:#ffb347;--p:50">
+              <svg class="ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="bg" cx="22" cy="22" r="18"/><circle class="fg" cx="22" cy="22" r="18"/></svg>
+              <span class="lg-code">ES</span>
+              <span class="lg-v" data-i18n="lang.es"></span>
+              <span class="lg-open"><span class="lg-hello">Hola</span><span class="lg-name" data-i18n="lang.es"></span><span class="lg-lvl" data-i18n="lvl.es"></span></span>
+            </button>
+            <button class="lang" data-say="你好" data-fx="ink" data-accent="#ff6b5a" style="--la:#ff6b5a;--p:28">
+              <svg class="ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="bg" cx="22" cy="22" r="18"/><circle class="fg" cx="22" cy="22" r="18"/></svg>
+              <span class="lg-code">中文</span>
+              <span class="lg-v" data-i18n="lang.zh"></span>
+              <span class="lg-open"><span class="lg-hello">你好</span><span class="lg-name" data-i18n="lang.zh"></span><span class="lg-lvl" data-i18n="lvl.zh"></span></span>
+            </button>
           </div>
         </div>
         <div class="panel reveal" data-panel>

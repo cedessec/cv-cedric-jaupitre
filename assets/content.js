@@ -4,14 +4,15 @@
    <b>…</b> = bold, <em>…</em> = accent colour, <br> = line break.
    ========================================================= */
 /* Links shown under each commitment (Leadership section). Example:
-   1: [{ label: 'Website', url: 'https://…' }]
+   1: [{ label: 'eg.site', url: 'https://…' }]   (label = a text key, or plain text)
    Photos: drop engage-1-1.jpg, engage-1-2.jpg, engage-1-3.jpg (… engage-5-3.jpg) in assets/photos/ */
-window.ENGAGE_LINKS = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+window.ENGAGE_LINKS = { 1: [], 2: [], 3: [], 4: [{ label: 'eg.site', url: 'https://www.kryptosphere.org/fr' }, { label: 'eg.li', url: 'https://www.linkedin.com/company/kryptosphere/' }], 5: [] };
 
 window.I18N = {
 
 /* ------------------------- ENGLISH ------------------------- */
 en: {
+  'edu2.badge': '#2 BBA in France · Challenges 2026', 'edu3.badge': 'CUHK · #18 worldwide · QS 2027', 'hero.drag': 'drag the globe', 'eg.site': 'Website', 'eg.li': 'LinkedIn',
   'tk.hint2': 'Hover a tool to see it at work',
   'eg.hint': 'Select a commitment', 'eg.soon': 'Photos coming soon',
   'gm.eyebrow': 'One last rally', 'gm.title': 'Can you return<br><em>my serve?</em>',
@@ -26,11 +27,11 @@ en: {
   'me.p2': 'Looking for an internship, full-time role, graduate program or V.I.E in Asia — <strong>Japan first</strong> — from May 2027.',
   'me.cta': 'Get in touch',
   'eg.eyebrow': 'Leadership &amp; commitments', 'eg.title': 'Leading, representing,<br><em>building communities.</em>',
-  'eg1.k': 'Founder &amp; President · 1 year', 'eg1.h': 'Environmental awareness association', 'eg1.p': 'Founded and led for a year an association raising awareness about the preservation of sea life.',
-  'eg2.k': 'ESSEC Business School', 'eg2.h': 'Career Ambassador', 'eg2.p': 'Representing the school through guest speaking, fairs, forums and webinars.',
-  'eg3.k': 'EDHEC Business School', 'eg3.h': 'Business Developer', 'eg3.p': 'Promoting the school at fairs, forums and webinars, and through guest speaking.',
-  'eg4.k': 'KRYPTOSPHERE APAC', 'eg4.h': 'Member', 'eg4.p': 'Part of the Asia-Pacific chapter of Europe\'s first tech student network.',
-  'eg5.k': 'EDHEC Asian Business', 'eg5.h': 'Sponsor Manager', 'eg5.p': 'In charge of sponsorship for the student society.',
+  'eg1.k': 'Founder &amp; President · 1 year', 'eg1.h': 'Atlanclean — sea-life awareness association', 'eg1.p': 'I founded and chaired Atlanclean, a student association created within EDHEC\'s Sustainable Impact Projects to raise awareness about the preservation of sea life. For a year I led the team and the project from start to finish: a workshop with a primary-school class, an aquarium set up in the classroom so pupils could look after fish themselves, and an awareness stand on campus. Our motto: « Nageons vers un avenir plus bleu ».',
+  'eg2.k': 'ESSEC Business School', 'eg2.h': 'Career Ambassador', 'eg2.p': 'Recently appointed Career Ambassador for the ESSEC Asia-Pacific campus, I work with Career Services to connect students and companies: I host and introduce guest speakers from industry, welcome company representatives at on-campus seminars and networking events, and represent the school at fairs, forums and webinars.',
+  'eg3.k': 'EDHEC Business School', 'eg3.h': 'Business Developer', 'eg3.p': 'I promoted the EDHEC International BBA to prospective students and their families: on the school\'s stand at student fairs, on stage during open days — where I presented my exchange semester in Shenzhen — and as a speaker in admissions webinars. A role that taught me to pitch, answer tough questions live and adapt to very different audiences.',
+  'eg4.k': 'KRYPTOSPHERE APAC', 'eg4.h': 'Member', 'eg4.p': 'Member of the Asia-Pacific chapter of KRYPTOSPHERE, Europe\'s first tech student network. I joined recently — more to come here soon.',
+  'eg5.k': 'EDHEC Asian Business &amp; Culture', 'eg5.h': 'Sponsor Manager', 'eg5.p': 'Sponsor Manager at EDHEC Asian Business &amp; Culture, the student society that promotes Asian business and cultures on campus. I was in charge of sponsorship: identifying and approaching partners, negotiating their support and managing the relationship to help fund the society\'s events.',
   'by.hint': 'Pick one to change the scene', 'by1.k': 'Semi-professional', 'by2.k': '7+ years',
   'meta.title': 'Cédric Jaupitre — Marketing & Product',
   'nav.journey': 'Journey', 'nav.education': 'Education', 'nav.toolkit': 'Toolkit', 'nav.beyond': 'Beyond work', 'nav.contact': 'Contact',
@@ -77,7 +78,7 @@ en: {
   'edu.eyebrow': 'Education', 'edu.title': 'Three campuses,<br><em>two continents.</em>',
   'edu1.name': 'ESSEC Business School', 'edu1.p': 'MSc in Marketing Management &amp; Digital (MMD) · Asia-Pacific campus', 'edu1.badge': '#2 worldwide · QS 2027', 'edu1.loc': 'Singapore',
   'edu2.name': 'EDHEC Business School', 'edu2.p': 'BBA · Major in Marketing, specialisation in Marketing Intelligence &amp; Innovation', 'edu2.loc': 'Lille, France',
-  'edu3.name': 'CUHK Shenzhen', 'edu3.yr': 'Fall 2024', 'edu3.p': 'Exchange semester · Big Data, Digital Customer Analytics (R), Pricing Strategy, SQL, Mandarin', 'edu3.loc': 'Shenzhen, China',
+  'edu3.name': 'CUHK Shenzhen', 'edu3.yr': 'Aug – Dec 2024', 'edu3.p': 'Exchange semester · Big Data, Digital Customer Analytics (R), Pricing Strategy, SQL, Mandarin', 'edu3.loc': 'Shenzhen, China',
 
   'tk.eyebrow': 'Toolkit', 'tk.title': 'Fluent in markets,<br><em>and in five languages.</em>',
   'tk.hint': 'Hover a language',
@@ -100,6 +101,7 @@ en: {
 
 /* ------------------------- 日本語 ------------------------- */
 ja: {
+  'edu2.badge': 'フランスBBAランキング2位 · Challenges 2026', 'edu3.badge': '香港中文大学 · QS世界ランキング2027 · 18位', 'hero.drag': '地球儀をドラッグ', 'eg.site': 'ウェブサイト', 'eg.li': 'LinkedIn',
   'tk.hint2': 'ツールにカーソルを合わせると画面イメージが表示されます',
   'eg.hint': '項目を選択してください', 'eg.soon': '写真は近日公開',
   'gm.eyebrow': '最後にひと勝負', 'gm.title': '私のサーブ、<br><em>返せますか？</em>',
@@ -114,11 +116,11 @@ ja: {
   'me.p2': '2027年5月以降、<strong>日本を第一志望</strong>に、アジアでのインターンシップ・正社員・グラデュエイトプログラム・V.I.E の機会を探しています。',
   'me.cta': '連絡する',
   'eg.eyebrow': 'リーダーシップ・課外での取り組み', 'eg.title': '率いる、代表する、<br><em>コミュニティをつくる。</em>',
-  'eg1.k': '創設者・代表 · 1年間', 'eg1.h': '環境啓発団体', 'eg1.p': '海洋生物の保護をテーマにした環境啓発団体を設立し、1年間代表として運営しました。',
-  'eg2.k': 'ESSECビジネススクール', 'eg2.h': 'キャリアアンバサダー', 'eg2.p': '講演、キャリアフェア、フォーラム、ウェビナーを通じて学校を代表しています。',
-  'eg3.k': 'EDHECビジネススクール', 'eg3.h': 'ビジネスデベロッパー', 'eg3.p': 'フェア、フォーラム、ウェビナー、講演を通じて学校の魅力を発信しました。',
-  'eg4.k': 'KRYPTOSPHERE APAC', 'eg4.h': 'メンバー', 'eg4.p': '欧州初の学生テックネットワークのアジア太平洋支部に所属。',
-  'eg5.k': 'EDHEC Asian Business', 'eg5.h': 'スポンサーマネージャー', 'eg5.p': '学生団体のスポンサー獲得・渉外を担当。',
+  'eg1.k': '創設者・代表 · 1年間', 'eg1.h': 'Atlanclean — 海洋生物保護の啓発団体', 'eg1.p': 'EDHECの「Sustainable Impact Projects」の一環として、海洋生物の保護をテーマにした学生団体 Atlanclean を設立し、代表を務めました。1年間、チームとプロジェクト全体をリードし、小学校でのワークショップ、児童が自分たちで魚の世話をできるよう教室に水槽を設置する取り組み、キャンパスでの啓発ブースを実施しました。合言葉は « Nageons vers un avenir plus bleu »（より青い未来へ泳ごう）。',
+  'eg2.k': 'ESSECビジネススクール', 'eg2.h': 'キャリアアンバサダー', 'eg2.p': 'ESSECアジア太平洋キャンパスのキャリアアンバサダーに就任しました。キャリアサービスと連携して学生と企業をつなぐ役割を担い、企業からのゲストスピーカーの紹介・進行、学内セミナーやネットワーキングイベントでの企業担当者の対応、フェア・フォーラム・ウェビナーでの学校紹介を行っています。',
+  'eg3.k': 'EDHECビジネススクール', 'eg3.h': 'ビジネスデベロッパー', 'eg3.p': 'EDHEC International BBA を志望する学生とそのご家族に向けて、学校の魅力を発信しました。進学フェアのブース対応、オープンキャンパスでの登壇（深圳での交換留学について発表）、入試ウェビナーへのスピーカー参加などを担当。プレゼンテーション力、その場での質疑応答、多様な聴衆に合わせた伝え方を身につけました。',
+  'eg4.k': 'KRYPTOSPHERE APAC', 'eg4.h': 'メンバー', 'eg4.p': '欧州初の学生テックネットワーク KRYPTOSPHERE のアジア太平洋支部メンバー。最近加入したばかりで、活動内容は今後追加していきます。',
+  'eg5.k': 'EDHEC Asian Business &amp; Culture', 'eg5.h': 'スポンサーマネージャー', 'eg5.p': 'アジアのビジネスと文化を学内に広める学生団体 EDHEC Asian Business &amp; Culture でスポンサーマネージャーを務めました。協賛候補の選定とアプローチ、支援内容の交渉、パートナーとの関係管理を担当し、団体のイベント運営資金の確保に貢献しました。',
   'by.hint': '選ぶと背景が切り替わります', 'by1.k': 'セミプロ', 'by2.k': '7年以上',
   'meta.title': 'セドリック・ジョピトル｜マーケティング＆プロダクト',
   'nav.journey': '職務経歴', 'nav.education': '学歴', 'nav.toolkit': 'スキル', 'nav.beyond': '課外活動', 'nav.contact': '連絡先',
@@ -165,7 +167,7 @@ ja: {
   'edu.eyebrow': '学歴', 'edu.title': '3つのキャンパス、<br><em>2つの大陸。</em>',
   'edu1.name': 'ESSECビジネススクール', 'edu1.p': 'マーケティング・マネジメント＆デジタル修士課程（MMD）· アジア太平洋キャンパス', 'edu1.badge': 'QS世界ランキング2027 · 世界2位', 'edu1.loc': 'シンガポール',
   'edu2.name': 'EDHECビジネススクール', 'edu2.p': '経営学士（BBA）· マーケティング専攻（マーケティング・インテリジェンス＆イノベーション）', 'edu2.loc': 'フランス・リール',
-  'edu3.name': '香港中文大学（深圳）', 'edu3.yr': '2024年秋', 'edu3.p': '交換留学 · ビッグデータ、デジタル顧客分析（R）、プライシング戦略、SQL、中国語', 'edu3.loc': '中国・深圳',
+  'edu3.name': '香港中文大学（深圳）', 'edu3.yr': '2024年8月〜12月', 'edu3.p': '交換留学 · ビッグデータ、デジタル顧客分析（R）、プライシング戦略、SQL、中国語', 'edu3.loc': '中国・深圳',
 
   'tk.eyebrow': 'スキル', 'tk.title': '市場を読み解く力と、<br><em>5つの言語。</em>',
   'tk.hint': '言語にカーソルを合わせてください',
@@ -188,6 +190,7 @@ ja: {
 
 /* ------------------------- FRANÇAIS ------------------------- */
 fr: {
+  'edu2.badge': '2e BBA de France · Challenges 2026', 'edu3.badge': 'CUHK · 18e mondial · QS 2027', 'hero.drag': 'faites tourner le globe', 'eg.site': 'Site web', 'eg.li': 'LinkedIn',
   'tk.hint2': 'Survolez un outil pour le voir à l\'œuvre',
   'eg.hint': 'Sélectionnez un engagement', 'eg.soon': 'Photos à venir',
   'gm.eyebrow': 'Un dernier échange', 'gm.title': 'Saurez-vous renvoyer<br><em>mon service ?</em>',
@@ -202,11 +205,11 @@ fr: {
   'me.p2': 'Je recherche un stage, un CDI, un graduate program ou un V.I.E en Asie — <strong>en priorité au Japon</strong> — à partir de mai 2027.',
   'me.cta': 'Me contacter',
   'eg.eyebrow': 'Engagements &amp; leadership', 'eg.title': 'Diriger, représenter,<br><em>fédérer.</em>',
-  'eg1.k': 'Fondateur &amp; Président · 1 an', 'eg1.h': 'Association de sensibilisation à l\'environnement', 'eg1.p': 'Création et présidence pendant un an d\'une association de sensibilisation à la préservation de la vie marine.',
-  'eg2.k': 'ESSEC Business School', 'eg2.h': 'Career Ambassador', 'eg2.p': 'Représentation de l\'école : interventions, salons, forums et webinaires.',
-  'eg3.k': 'EDHEC Business School', 'eg3.h': 'Business Developer', 'eg3.p': 'Promotion de l\'école lors de salons, forums, webinaires et interventions.',
-  'eg4.k': 'KRYPTOSPHERE APAC', 'eg4.h': 'Membre', 'eg4.p': 'Antenne Asie-Pacifique du premier réseau étudiant tech d\'Europe.',
-  'eg5.k': 'EDHEC Asian Business', 'eg5.h': 'Responsable sponsors', 'eg5.p': 'En charge des partenariats de l\'association étudiante.',
+  'eg1.k': 'Fondateur &amp; Président · 1 an', 'eg1.h': 'Atlanclean — sensibilisation à la vie marine', 'eg1.p': 'J\'ai fondé et présidé Atlanclean, une association étudiante créée dans le cadre des Sustainable Impact Projects de l\'EDHEC pour sensibiliser à la préservation de la vie marine. Pendant un an, j\'ai piloté l\'équipe et le projet de bout en bout : un atelier avec une classe d\'école primaire, l\'installation d\'un aquarium dans la classe pour que les élèves s\'occupent eux-mêmes des poissons, et un stand de sensibilisation sur le campus. Notre devise : « Nageons vers un avenir plus bleu ».',
+  'eg2.k': 'ESSEC Business School', 'eg2.h': 'Career Ambassador', 'eg2.p': 'Récemment nommé Career Ambassador du campus Asie-Pacifique de l\'ESSEC, je travaille avec le Career Services pour rapprocher étudiants et entreprises : j\'accueille et présente des intervenants issus de l\'entreprise, je reçois les représentants des sociétés lors des séminaires et événements de networking sur le campus, et je représente l\'école sur les salons, forums et webinaires.',
+  'eg3.k': 'EDHEC Business School', 'eg3.h': 'Business Developer', 'eg3.p': 'J\'ai promu l\'EDHEC International BBA auprès des futurs étudiants et de leurs familles : sur le stand de l\'école lors des salons étudiants, sur scène pendant les journées portes ouvertes — où j\'ai présenté mon semestre d\'échange à Shenzhen — et comme intervenant lors de webinaires d\'admission. Un rôle qui m\'a appris à pitcher, à répondre en direct aux questions difficiles et à m\'adapter à des publics très différents.',
+  'eg4.k': 'KRYPTOSPHERE APAC', 'eg4.h': 'Membre', 'eg4.p': 'Membre de l\'antenne Asie-Pacifique de KRYPTOSPHERE, premier réseau étudiant tech d\'Europe. Je viens de rejoindre l\'association : la suite arrive bientôt.',
+  'eg5.k': 'EDHEC Asian Business &amp; Culture', 'eg5.h': 'Responsable sponsors', 'eg5.p': 'Responsable sponsors d\'EDHEC Asian Business &amp; Culture, l\'association étudiante qui fait rayonner le business et les cultures d\'Asie sur le campus. J\'étais en charge des partenariats : identifier et démarcher les sponsors, négocier leur soutien et suivre la relation pour financer les événements de l\'association.',
   'by.hint': 'Choisissez pour changer le décor', 'by1.k': 'Semi-professionnel', 'by2.k': '7 ans et plus',
   'meta.title': 'Cédric Jaupitre — Marketing & Produit',
   'nav.journey': 'Parcours', 'nav.education': 'Formation', 'nav.toolkit': 'Compétences', 'nav.beyond': 'Au-delà', 'nav.contact': 'Contact',
@@ -253,7 +256,7 @@ fr: {
   'edu.eyebrow': 'Formation', 'edu.title': 'Trois campus,<br><em>deux continents.</em>',
   'edu1.name': 'ESSEC Business School', 'edu1.p': 'MSc in Marketing Management &amp; Digital (MMD) · campus Asie-Pacifique', 'edu1.badge': 'N°2 mondial · QS 2027', 'edu1.loc': 'Singapour',
   'edu2.name': 'EDHEC Business School', 'edu2.p': 'BBA · Majeure Marketing, spécialisation Marketing Intelligence &amp; Innovation', 'edu2.loc': 'Lille, France',
-  'edu3.name': 'CUHK Shenzhen', 'edu3.yr': 'Automne 2024', 'edu3.p': 'Semestre d\'échange · Big Data, Digital Customer Analytics (R), Pricing, SQL, mandarin', 'edu3.loc': 'Shenzhen, Chine',
+  'edu3.name': 'CUHK Shenzhen', 'edu3.yr': 'Août – déc. 2024', 'edu3.p': 'Semestre d\'échange · Big Data, Digital Customer Analytics (R), Pricing, SQL, mandarin', 'edu3.loc': 'Shenzhen, Chine',
 
   'tk.eyebrow': 'Compétences', 'tk.title': 'À l\'aise sur les marchés,<br><em>et en cinq langues.</em>',
   'tk.hint': 'Survolez une langue',

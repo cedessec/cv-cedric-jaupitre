@@ -46,7 +46,7 @@ function renderEg() {
   if (!$('#egH')) return;
   $$('.eg-tab').forEach(x => { const on = +x.dataset.eg === egSel; x.classList.toggle('on', on); x.setAttribute('aria-selected', on); });
   $('#egK').innerHTML = T('eg' + egSel + '.k'); $('#egH').innerHTML = T('eg' + egSel + '.h'); $('#egP').innerHTML = T('eg' + egSel + '.p');
-  $('#egLinks').innerHTML = ((window.ENGAGE_LINKS || {})[egSel] || []).map(l => '<a class="btn" href="' + l.url + '" target="_blank" rel="noopener">' + l.label + ' ↗</a>').join('');
+  $('#egLinks').innerHTML = ((window.ENGAGE_LINKS || {})[egSel] || []).map(l => '<a class="btn" href="' + l.url + '" target="_blank" rel="noopener">' + (T(l.label) || l.label) + ' ↗</a>').join('');
   const m = $('#egMedia'), list = (window.PHOTOS || {})['eg' + egSel]; m.classList.toggle('empty', !list); m.innerHTML = list ? gallery('eg' + egSel) : T('eg.soon');
 }
 
@@ -95,10 +95,21 @@ function size() {
 size(); addEventListener('resize', size);
 let lon0 = 103.82, lat0 = 10, tLon = 103.82, tLat = 10, zoom = 1, tZoom = 1, mx = 0, my = 0, active = 'Singapore', spin = 0, accent = '#d9b38c';
 addEventListener('pointermove', e => { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; });
+/* the globe can be grabbed and spun freely on the landing screen (mouse or pen) */
+let drag = null, dragged = false, velLon = 0, velLat = 0;
+const overGlobe = e => current === scenes[0] && Math.hypot(e.clientX - cx, e.clientY - cy) < base * zoom * 1.04 && !e.target.closest('a,button,.me,nav');
+addEventListener('pointerdown', e => { if (e.pointerType === 'touch' || !overGlobe(e)) return; drag = { x: e.clientX, y: e.clientY }; dragged = true; velLon = velLat = 0; document.body.style.cursor = 'grabbing'; e.preventDefault(); });
+addEventListener('pointermove', e => {
+  if (!drag) { document.body.style.cursor = e.pointerType !== 'touch' && overGlobe(e) ? 'grab' : ''; return; }
+  const k = 180 / (Math.PI * base * zoom); velLon = -(e.clientX - drag.x) * k; velLat = (e.clientY - drag.y) * k;
+  tLon = lon0 = lon0 + velLon; tLat = lat0 = Math.max(-85, Math.min(85, lat0 + velLat)); drag = { x: e.clientX, y: e.clientY };
+});
+addEventListener('pointerup', () => { if (drag) { drag = null; document.body.style.cursor = ''; } });
 
 function drawGlobe() {
   const rad = base * zoom;
-  const L = (lon0 + mx * 12 / zoom) * RAD, Tt = (lat0 - my * 7 / zoom) * RAD;
+  const par = dragged && current === scenes[0] ? 0 : 1;   // no mouse parallax once the visitor has taken the globe in hand
+  const L = (lon0 + par * mx * 12 / zoom) * RAD, Tt = (lat0 - par * my * 7 / zoom) * RAD;
   const cl = Math.cos(L), sl = Math.sin(L), ct = Math.cos(Tt), st = Math.sin(Tt);
   const proj = p => { const x = p[0] * cl - p[2] * sl, z1 = p[0] * sl + p[2] * cl; return [cx + x * rad, cy - (p[1] * ct - z1 * st) * rad, p[1] * st + z1 * ct]; };
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, W, H);
@@ -156,7 +167,9 @@ function frame(now) {
   spin += dt * 0.0015;
   const d = ((tLon - lon0 + 540) % 360) - 180, e = reduce ? 1 : 0.05;
   lon0 += d * e; lat0 += (tLat - lat0) * e; zoom += (tZoom - zoom) * (reduce ? 1 : 0.045);
+  if (!drag && (Math.abs(velLon) > 0.02 || Math.abs(velLat) > 0.02)) { velLon *= 0.94; velLat *= 0.94; tLon = lon0 = lon0 + velLon; tLat = lat0 = Math.max(-85, Math.min(85, lat0 + velLat)); }   // inertia after a throw
   drawGlobe();
+  if (current === scenes[0] && !dragged && W >= 900) { ctx.font = '700 22px Caveat, Yomogi, cursive'; ctx.fillStyle = 'rgba(239,235,227,.6)'; ctx.textAlign = 'center'; ctx.fillText('↻ ' + T('hero.drag'), cx, cy + base * zoom + 34); ctx.textAlign = 'left'; }
   // background scene: fade the old one out, wait for the globe to arrive, fade the new one in
   if (fxWant !== fxCur) { fxK -= (reduce ? 1 : dt / 300); if (fxK <= 0 && now >= fxHold) { fxCur = fxWant; fxState = window.FX[fxCur].init(W, H); fxK = 0; } }
   else fxK = Math.min(1, fxK + (reduce ? 1 : dt / 900));
@@ -170,6 +183,7 @@ const hudCity = $('#hudCity'), hudCoord = $('#hudCoord'), hudTime = $('#hudTime'
 let tz = 'Asia/Singapore', current = null;
 const fmt = (v, p, n) => Math.abs(v).toFixed(2) + '°' + (v >= 0 ? p : n);
 function setScene(d, quiet) {
+  velLon = velLat = 0;
   accent = d.accent; root.style.setProperty('--accent', d.accent);
   active = d.city; tLon = +d.lon; tZoom = +(d.zoom || 1);
   tLat = tZoom > 1.3 ? +d.lat : Math.max(-10, Math.min(38, +d.lat * 0.7));
@@ -202,10 +216,10 @@ $$('.school').forEach(s => {
 });
 /* languages: hovering one changes the whole ambiance */
 const say = $('#say'); let langPick = null;
-function markLang(l) { $$('.lang').forEach(x => x.classList.toggle('on', x === l)); say.textContent = l.dataset.say; }
+function markLang(l) { $$('.lang').forEach(x => x.classList.toggle('on', x === l)); if (say) say.textContent = l.dataset.say; }
 $$('.lang').forEach(l => {
   const go = () => { if (langPick === l) return; langPick = l; markLang(l); setScene({ ...$('#toolkit').dataset, fx: l.dataset.fx, accent: l.dataset.accent }, true); };
-  l.addEventListener('mouseenter', go); l.addEventListener('click', go);
+  l.addEventListener('mouseenter', go); l.addEventListener('click', go); l.addEventListener('focus', go);
 });
 
 /* photo galleries: rows sized by each photo's proportions; click opens the photo full screen */
