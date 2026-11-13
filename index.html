@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cédric Jaupitre — Marketing & Product</title>
+<meta name="description" content="Cédric Jaupitre — Marketing & product, built between Paris, Tokyo, Shenzhen and Singapore. Open to opportunities in Japan & Asia from May 2027.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=Caveat:wght@500;700&family=Yomogi&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   DESIGN TOKENS  — change colours / fonts here
+   ========================================================= */
+@property --accent { syntax: '<color>'; inherits: true; initial-value: #d9b38c; }
+:root{
+  --hand:"Caveat", "Yomogi", cursive;
+  --bg:#0b0c0f; --surface:#14161b; --surface-2:#1b1e24;
+  --paper:#efebe3; --muted:#a19d94; --faint:#6b6861;
+  --line:rgba(239,235,227,.12); --line-strong:rgba(239,235,227,.24);
+  --accent:#d9b38c;
+  --serif:"Instrument Serif", "Noto Serif JP", Georgia, serif;
+  --sans:"Inter", "Noto Sans JP", system-ui, -apple-system, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, monospace;
+  --r-sm:6px; --r-md:14px; --r-lg:24px; --r-pill:999px;
+  --s1:8px; --s2:16px; --s3:24px; --s4:40px; --s5:64px; --s6:112px;
+  --ease:cubic-bezier(.2,.7,.1,1);
+  transition: --accent .9s var(--ease);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--paper);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+::selection{background:var(--accent);color:var(--bg)}
+
+/* ambient tint that follows the active chapter */
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(60vw 60vw at 78% 45%, color-mix(in oklab, var(--accent) 16%, transparent), transparent 70%);}
+.grain{position:fixed;inset:-50%;z-index:1;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* globe */
+#fx{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+#globe{position:fixed;inset:0;width:100vw;height:100vh;z-index:1;pointer-events:none;transition:opacity 1.2s var(--ease) .5s;}
+/* keeps the text readable over the animated backgrounds */
+.scrim{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(120% 90% at 50% 50%,transparent 55%,var(--bg) 100%)}
+
+/* giant city word */
+#cityWord{position:fixed;left:-1vw;bottom:-4vw;z-index:2;pointer-events:none;font-family:var(--serif);font-size:22vw;line-height:.8;letter-spacing:-.02em;
+  color:transparent;-webkit-text-stroke:1px color-mix(in oklab, var(--accent) 28%, transparent);white-space:nowrap;transition:opacity .6s var(--ease), transform .8s var(--ease)}
+#cityWord.swap{opacity:0;transform:translateY(4vw)}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,4vw,56px);
+  background:linear-gradient(var(--bg) 0%, color-mix(in oklab,var(--bg) 0%,transparent) 100%)}
+.logo{font-family:var(--serif);font-size:26px;text-decoration:none;letter-spacing:-.01em}
+.logo span{color:var(--accent);transition:color .9s}
+nav ul{display:flex;gap:24px;list-style:none;font-size:13px;letter-spacing:.04em}
+nav ul a{text-decoration:none;color:var(--muted);transition:color .3s}
+nav ul a:hover,nav ul a.active{color:var(--paper)}
+nav ul a.active::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;vertical-align:middle}
+.navr{display:flex;align-items:center;gap:28px}
+.langsw{display:flex;border:1px solid var(--line-strong);border-radius:var(--r-pill);padding:3px;background:color-mix(in oklab,var(--bg) 60%,transparent);backdrop-filter:blur(8px)}
+.langsw button{font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:6px 12px;border-radius:var(--r-pill);border:0;background:transparent;color:var(--muted);cursor:pointer;transition:background .3s,color .3s}
+.langsw button:hover{color:var(--paper)}
+.langsw button.on{background:var(--accent);color:var(--bg)}
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:30;width:0}
+
+/* HUD */
+.hud{position:fixed;right:clamp(20px,4vw,56px);bottom:24px;z-index:20;font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;
+  display:flex;gap:14px;align-items:center;padding:10px 14px;border:1px solid var(--line);border-radius:var(--r-pill);background:color-mix(in oklab,var(--bg) 70%,transparent);backdrop-filter:blur(10px)}
+.hud .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--accent);animation:ping 2s infinite}
+.hud b{color:var(--paper);font-weight:500}
+@keyframes ping{0%{box-shadow:0 0 0 0 color-mix(in oklab,var(--accent) 60%,transparent)}100%{box-shadow:0 0 0 10px transparent}}
+
+main{position:relative;z-index:5}
+.wrap{padding:0 clamp(20px,4vw,56px)}
+.col{max-width:min(720px,52vw)}
+.chapter.col,.wide{max-width:min(800px,56vw)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--accent)}
+h2{font-family:var(--serif);font-weight:400;font-size:clamp(48px,7vw,104px);line-height:.95;letter-spacing:-.02em;margin:18px 0 var(--s4)}
+h2 em{color:var(--accent);font-style:italic}
+
+/* ---------- PANELS: glass blocks with a fine light-reactive border ----------
+   plate = frosted glass + soft shadow · edge = 1px border that lights up near the cursor */
+.panel{position:relative;padding:34px 38px;border-radius:20px;--mx:50%;--my:0%;--sx:0px;--sy:0px;transform-style:preserve-3d}
+.panel.in{transition:transform .35s var(--ease),opacity 1s var(--ease)}
+.panel>:not(i){position:relative}
+.panel>i{position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+.panel .plate{background:linear-gradient(155deg,color-mix(in oklab,var(--surface-2) 62%,transparent),color-mix(in oklab,var(--bg) 70%,transparent) 55%);-webkit-backdrop-filter:blur(16px) saturate(1.25);backdrop-filter:blur(16px) saturate(1.25);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07),var(--sx) calc(34px + var(--sy)) 70px -34px rgba(0,0,0,.85),0 2px 10px -4px rgba(0,0,0,.5);transition:box-shadow .4s var(--ease)}
+.panel .plate::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(520px circle at var(--mx) var(--my),color-mix(in oklab,var(--accent) 13%,transparent),transparent 65%);opacity:0;transition:opacity .5s}
+.panel:hover .plate::after{opacity:1}
+.panel .edge{padding:1px;background:radial-gradient(560px circle at var(--mx) var(--my),var(--accent),color-mix(in oklab,var(--accent) 28%,transparent) 38%,rgba(239,235,227,.13) 70%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);opacity:.75;transition:opacity .4s}
+.panel:hover .edge{opacity:1}
+h2,.hero h1,.hero .lede,.greet{text-shadow:0 0 28px var(--bg),0 0 60px var(--bg)}
+
+/* profile: avatar in the top-left corner that opens a short summary */
+.me{position:relative}
+.me .logo{display:flex;align-items:center;gap:12px}
+.me .logo img{width:42px;height:42px;border-radius:50%;object-fit:cover;object-position:50% 18%;box-shadow:0 0 0 1px var(--line-strong),0 0 0 4px color-mix(in oklab,var(--accent) 0%,transparent);transition:box-shadow .4s,transform .4s var(--ease)}
+.me:hover .logo img,.me.open .logo img{box-shadow:0 0 0 1px var(--accent),0 0 0 5px color-mix(in oklab,var(--accent) 22%,transparent);transform:scale(1.06)}
+.mecard{position:absolute;top:100%;left:-8px;padding-top:14px;width:min(470px,calc(100vw - 32px));opacity:0;visibility:hidden;transform:translateY(-10px) scale(.97);transform-origin:24px 0;transition:opacity .35s var(--ease),transform .45s var(--ease),visibility .35s}
+.me:hover .mecard,.me.open .mecard,.me:focus-within .mecard{opacity:1;visibility:visible;transform:none}
+.mecard .in{display:grid;grid-template-columns:150px 1fr;gap:22px;padding:18px;border-radius:20px;background:linear-gradient(155deg,color-mix(in oklab,var(--surface-2) 88%,transparent),color-mix(in oklab,var(--bg) 92%,transparent));-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 0 1px var(--line-strong),0 40px 80px -30px #000}
+.mecard img{width:100%;height:100%;min-height:190px;object-fit:cover;object-position:50% 15%;border-radius:12px}
+.mecard h3{font-family:var(--serif);font-weight:400;font-size:28px;line-height:1.05}
+.mecard .k{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:block;margin:6px 0 12px}
+.mecard p{font-size:13.5px;line-height:1.55;color:var(--muted)}
+.mecard p+p{margin-top:8px}
+.mecard p strong{color:var(--paper);font-weight:500}
+.mecard .ctas{margin-top:14px;gap:8px}
+.mecard .btn{padding:9px 15px;font-size:12.5px}
+
+/* clean photo inside a school row */
+.shot{display:none;position:relative;width:300px;max-width:100%;margin-top:18px;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px var(--line-strong),0 24px 50px -24px #000}
+.shot.has{display:block}
+.shot img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;transition:transform 1.2s var(--ease)}
+.school:hover .shot img,.school.on .shot img{transform:scale(1.05)}
+.shot .cap{position:absolute;left:0;right:0;bottom:0;padding:26px 14px 10px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper);background:linear-gradient(transparent,rgba(0,0,0,.75))}
+
+/* leadership: list on the left, detail (text + photos + links) on the right */
+.col.full{max-width:none}
+.eng{display:grid;grid-template-columns:minmax(300px,400px) 1fr;gap:22px;align-items:start}
+.eg-list{display:flex;flex-direction:column;gap:8px}
+.eg-tab{position:relative;font:inherit;color:inherit;text-align:left;display:flex;align-items:center;gap:16px;padding:16px 18px;border-radius:16px;border:1px solid var(--line);background:color-mix(in oklab,var(--bg) 62%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);cursor:pointer;transition:border-color .3s,background .3s,transform .4s var(--ease)}
+.eg-tab .rn{font-family:var(--serif);font-size:30px;line-height:1;color:var(--muted);min-width:38px;transition:color .3s}
+.eg-tab .tx{flex:1;display:block}
+.eg-tab .rk{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.eg-tab b{font-family:var(--serif);font-weight:400;font-size:21px;line-height:1.15}
+.eg-tab i{font-style:normal;color:var(--muted);opacity:0;transform:translateX(-6px);transition:opacity .3s,transform .4s var(--ease)}
+.eg-tab:hover{border-color:var(--line-strong);transform:translateX(3px)}
+.eg-tab.on{border-color:var(--accent);background:color-mix(in oklab,var(--accent) 12%,color-mix(in oklab,var(--bg) 70%,transparent))}
+.eg-tab.on .rn,.eg-tab.on i{color:var(--accent)}
+.eg-tab.on i{opacity:1;transform:none}
+.eg-tab:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.eg-detail{padding:34px 36px}
+.eg-body{transition:opacity .28s var(--ease),transform .28s var(--ease)}
+.eg-body.swap{opacity:0;transform:translateY(8px)}
+.eg-detail .rk{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:10px}
+.eg-detail h3{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.2vw,46px);line-height:1.05;margin-bottom:12px}
+.eg-detail p{color:var(--muted);max-width:640px}
+.eg-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.eg-links:empty{display:none}
+.eg-media .gal{margin-top:26px}
+.slot{position:relative;margin:0;border-radius:14px;overflow:hidden;border:1px dashed var(--line-strong);background:linear-gradient(135deg,rgba(239,235,227,.05),transparent 60%);display:flex;align-items:center;justify-content:center;min-height:0}
+.slot.big{grid-row:1/3}
+.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s,transform 1.2s var(--ease)}
+.slot.has{border-style:solid;border-color:var(--line-strong)}
+.slot.has img{opacity:1}
+.slot.has:hover img{transform:scale(1.04)}
+.slot figcaption{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.slot.has figcaption{display:none}
+
+/* photo galleries (justified rows) + lightbox */
+.gal{display:flex;flex-direction:column;gap:10px;margin-top:var(--s4)}
+.gal .row{display:flex;gap:10px;max-height:460px}
+.gal button{flex:var(--r) 1 0;min-width:0;padding:0;border:0;border-radius:14px;overflow:hidden;cursor:zoom-in;background:var(--surface);box-shadow:0 0 0 1px var(--line-strong);transition:box-shadow .3s}
+.gal button:hover,.gal button:focus-visible{box-shadow:0 0 0 1px var(--accent),0 0 0 4px color-mix(in oklab,var(--accent) 22%,transparent);outline:0}
+.gal img{display:block;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.gal button:hover img{transform:scale(1.04)}
+.eg-media.empty{display:flex;align-items:center;justify-content:center;aspect-ratio:16/6;margin-top:26px;border-radius:14px;border:1px dashed var(--line-strong);font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lb{position:fixed;inset:0;z-index:100;background:rgba(5,6,8,.94);display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;padding:20px}
+.lb.show{display:flex}
+.lb img{max-width:92vw;max-height:80vh;border-radius:10px;box-shadow:0 30px 80px #000}
+.lb p{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:center}
+.lb button{position:absolute;width:46px;height:46px;border-radius:50%;border:1px solid var(--line-strong);background:rgba(20,22,27,.8);color:var(--paper);font-size:20px;cursor:pointer}
+.lb button:hover{border-color:var(--accent)}
+.lb .x{top:18px;right:18px}.lb .pv{left:18px;top:50%}.lb .nx{right:18px;top:50%}
+
+/* mini-game */
+.play{padding-block:var(--s6)}
+.game{padding:22px}
+.g-top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.g-top b{color:var(--paper);font-weight:500}
+.g-wrap{position:relative;border-radius:14px;overflow:hidden;background:color-mix(in oklab,var(--bg) 60%,transparent);touch-action:none;cursor:ns-resize}
+#game{display:block;width:100%}
+.g-over{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:20px;background:color-mix(in oklab,var(--bg) 72%,transparent);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s;cursor:default}
+.g-over.show{opacity:1;visibility:visible}
+.g-over p{font-family:var(--serif);font-size:clamp(22px,2.6vw,34px);line-height:1.15;max-width:620px}
+.g-over p em{color:var(--accent)}
+.g-over .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.g-facts{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin-top:16px}
+.g-facts li{display:flex;gap:12px;align-items:baseline;padding:12px 14px;border-radius:12px;border:1px solid var(--line);font-size:13.5px;line-height:1.4;color:var(--faint);transition:border-color .5s,color .5s,background .5s}
+.g-facts li b{font-family:var(--mono);font-weight:500;font-size:10.5px;letter-spacing:.08em;color:inherit}
+.g-facts li span{letter-spacing:.06em}
+.g-facts li.on{color:var(--paper);border-color:var(--accent);background:color-mix(in oklab,var(--accent) 10%,transparent);animation:pop .5s var(--ease)}
+.g-facts li.on b{color:var(--accent)}
+@keyframes pop{from{transform:scale(.94);opacity:.3}}
+
+/* (old role cards, unused) */
+.engage{padding-block:var(--s6)}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.role{display:flex;gap:20px;align-items:flex-start;padding:26px 28px}
+.role.lead{grid-column:1/-1;padding:32px 34px}
+.role .rn{font-family:var(--serif);font-size:44px;line-height:.9;color:var(--accent);flex:none;min-width:52px;transition:color .9s}
+.role .rk{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+.role h4{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.08;margin-bottom:8px}
+.role.lead h4{font-size:36px}
+.role p{font-size:14.5px;color:var(--muted);line-height:1.55}
+
+/* beyond work: two tiles that switch the whole scene */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tile{font:inherit;color:inherit;text-align:left;background:none;border:0;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;min-height:260px;padding:28px}
+.tile .kick{position:absolute!important;top:24px;left:28px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tile .big{position:absolute!important;top:14px;right:24px;font-family:var(--serif);font-size:84px;line-height:1;color:var(--paper);opacity:.18;transition:color .5s,opacity .5s}
+.tile h4{font-family:var(--serif);font-weight:400;font-size:34px;line-height:1.05;margin-bottom:8px}
+.tile p{font-size:14.5px;color:var(--muted);line-height:1.55}
+.tile .edge{opacity:.4}
+.tile.on .edge{opacity:1;background:linear-gradient(var(--accent),var(--accent))}
+.tile.on .big{color:var(--accent);opacity:.95}
+.tile:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 1s var(--ease), transform 1s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:100px;padding-bottom:80px}
+.greet{flex:none;line-height:1.3;height:1.3em;font-family:var(--serif);font-style:italic;font-size:clamp(28px,3.4vw,44px);color:var(--accent);height:1.25em;overflow:hidden;position:relative;margin-bottom:6px}
+.greet span{position:absolute;left:0;top:0;transition:transform .7s var(--ease), opacity .7s var(--ease)}
+.greet span.out{transform:translateY(-100%);opacity:0}
+.greet span.next{transform:translateY(100%);opacity:0}
+.status{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--paper);padding:8px 14px;border:1px solid var(--line-strong);border-radius:var(--r-pill);margin-bottom:var(--s3);align-self:flex-start;background:color-mix(in oklab,var(--bg) 60%,transparent)}
+.status i{width:7px;height:7px;border-radius:50%;background:#6fcf97;animation:ping2 2s infinite}
+@keyframes ping2{0%{box-shadow:0 0 0 0 rgba(111,207,151,.6)}100%{box-shadow:0 0 0 10px transparent}}
+.kana{font-family:var(--sans);font-size:15px;letter-spacing:.3em;color:var(--muted);margin-top:18px}
+.kana:empty{display:none}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(64px,11vw,172px);line-height:.88;letter-spacing:-.03em}
+.hero h1 .l2{display:block;padding-left:.6em;font-style:italic}
+.hero .lede{margin-top:var(--s4);font-size:clamp(17px,1.5vw,20px);color:var(--muted);max-width:520px}
+.hero .lede strong{color:var(--paper);font-weight:500}
+.stats{display:flex;gap:var(--s4);margin-top:var(--s4);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.stats b{display:block;font-family:var(--serif);font-size:44px;font-weight:400;color:var(--paper);letter-spacing:0;text-transform:none;line-height:1}
+.ctas{display:flex;gap:12px;margin-top:var(--s4);flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:var(--r-pill);border:1px solid var(--line-strong);text-decoration:none;font-size:14px;font-weight:500;cursor:pointer;background:transparent;color:var(--paper);font-family:var(--sans);transition:background .3s, color .3s, border-color .3s, transform .3s var(--ease)}
+.btn:hover{border-color:var(--accent)}
+.btn.solid{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.btn.solid:hover{background:var(--paper);border-color:var(--paper)}
+.scrollhint{position:absolute;left:clamp(20px,4vw,56px);bottom:28px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase;display:flex;gap:10px;align-items:center}
+.scrollhint i{width:1px;height:36px;background:linear-gradient(var(--accent),transparent);animation:drip 2s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ticker: what I'm looking for + contact */
+.ticker{display:flex;align-items:stretch;border-top:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;z-index:5;background:color-mix(in oklab,var(--bg) 72%,transparent);backdrop-filter:blur(8px)}
+.ticker .lab{flex:none;display:flex;align-items:center;gap:10px;padding:0 22px 0 clamp(20px,4vw,56px);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--bg);background:var(--accent);font-weight:500;transition:background .9s}
+.ticker .lab i{width:7px;height:7px;border-radius:50%;background:var(--bg);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+.ticker .view{flex:1;overflow:hidden;padding:20px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.ticker .track{display:flex;align-items:center;white-space:nowrap;width:max-content;animation:slide 46s linear infinite;font-family:var(--serif);font-size:30px;line-height:1.2;color:var(--paper)}
+.ticker:hover .track{animation-play-state:paused}
+.ticker .track>*{display:inline-flex;align-items:center;color:inherit;text-decoration:none}
+.ticker .track>*::after{content:"✦";color:var(--accent);margin:0 36px;font-size:16px}
+.ticker .track .c{font-family:var(--mono);font-size:15px;letter-spacing:.02em;color:var(--muted)}
+.ticker .track a.c:hover{color:var(--accent)}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* JOURNEY / chapters */
+.journey{padding-top:var(--s6)}
+.chapter{scroll-margin-top:60px;min-height:100vh;padding:var(--s5) 0;display:flex;flex-direction:column;justify-content:center;position:relative}
+.ch-index{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted);display:flex;gap:16px;align-items:center;text-transform:uppercase}
+.ch-index .n{color:var(--accent);font-weight:500}
+.ch-index .bar{flex:0 0 60px;height:1px;background:var(--line-strong)}
+.ch-top{display:flex;align-items:center;gap:var(--s3)}
+.brandlogo{display:none;flex:none;width:64px;height:64px;border-radius:var(--r-md);background:#fff;align-items:center;justify-content:center;padding:9px}
+.brandlogo.has{display:flex}
+.brandlogo img{max-width:100%;max-height:100%;object-fit:contain}
+.school .brandlogo{width:48px;height:48px;padding:7px;margin-bottom:12px}
+.ch-company{font-family:var(--serif);font-weight:400;font-size:clamp(48px,6.4vw,96px);line-height:.95;letter-spacing:-.02em;margin:18px 0 8px}
+.ch-company small{font-size:.4em;color:var(--muted);font-style:italic;margin-left:.3em}
+.ch-role{font-size:18px;color:var(--paper);opacity:.85;margin-bottom:var(--s4)}
+.ch-body{display:grid;grid-template-columns:200px 1fr;gap:var(--s4);align-items:start}
+.kpi .num{font-family:var(--serif);font-size:84px;line-height:.9;color:var(--accent);display:block;letter-spacing:-.02em}
+.kpi .num small{font-size:.38em;font-style:italic;margin-right:.15em;letter-spacing:0}
+.kpi .cap{font-size:13px;color:var(--muted);display:block;margin-top:10px;line-height:1.45}
+.points{list-style:none;display:flex;flex-direction:column;gap:14px}
+.points li{position:relative;padding-left:22px;color:color-mix(in oklab,var(--paper) 86%,var(--bg))}
+.points li::before{content:"";position:absolute;left:0;top:.75em;width:10px;height:1px;background:var(--accent)}
+.points b{color:var(--paper);font-weight:600}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:var(--s3)}
+.tag{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:var(--r-pill);border:1px solid var(--line-strong);color:var(--muted)}
+
+/* photo slot: shows a typographic placeholder until a real photo is added */
+.photo{margin-top:var(--s4);aspect-ratio:16/8;border-radius:var(--r-lg);overflow:hidden;position:relative;border:1px solid var(--line);
+  background:var(--surface);display:flex;align-items:flex-end;justify-content:space-between;padding:20px 24px}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+.photo:hover img{transform:scale(1.04)}
+.photo.has .glyph,.photo.has .lines{display:none}
+.photo.has .label{color:var(--paper);text-shadow:0 1px 8px rgba(0,0,0,.8)}
+.photo .glyph{position:absolute;right:-.05em;top:50%;transform:translateY(-50%);font-family:var(--serif);font-size:clamp(90px,11vw,170px);line-height:1;color:var(--accent);opacity:.9;white-space:nowrap}
+.photo .lines{position:absolute;inset:0;background-image:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 48px);opacity:.6}
+.photo .label{position:relative;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+/* EDUCATION */
+.education{padding-block:var(--s6)}
+.schools{display:flex;flex-direction:column}
+.school:last-child{border-bottom:0}
+.school{display:grid;grid-template-columns:84px 1fr auto;align-items:start;gap:var(--s3);padding:28px 0;border-bottom:1px solid var(--line);cursor:default;position:relative;transition:padding .5s var(--ease)}
+.school::after{content:"";position:absolute;left:0;bottom:-1px;height:1px;width:0;background:var(--accent);transition:width .6s var(--ease)}
+.school:hover::after,.school.on::after{width:100%}
+.school:hover,.school.on{padding-left:14px}
+.school .yr{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--muted);margin-bottom:8px}
+.crest{width:76px;height:76px;border-radius:18px;background:#f6f3ee;display:flex;align-items:center;justify-content:center;padding:9px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06),0 0 0 1px var(--line-strong),0 18px 34px -18px #000;transition:transform .5s var(--ease),box-shadow .5s}
+.crest img{max-width:100%;max-height:100%;mix-blend-mode:multiply}
+.school:hover .crest,.school.on .crest{transform:translateY(-3px) scale(1.04);box-shadow:inset 0 0 0 1px rgba(0,0,0,.06),0 0 0 1px var(--accent),0 24px 40px -18px #000}
+.school h3{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.4vw,46px);line-height:1}
+.school p{color:var(--muted);font-size:15px;margin-top:8px}
+.school .badge{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:5px 10px;border-radius:var(--r-pill)}
+.school .loc{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right;padding-top:10px;white-space:nowrap}
+
+/* TOOLKIT */
+.toolkit{padding-block:var(--s6)}
+.grid2{display:grid;grid-template-columns:1fr;gap:var(--s4)}
+.langs{display:flex;flex-direction:column;gap:6px}
+.lang{display:grid;grid-template-columns:120px 1fr 210px;align-items:center;gap:var(--s3);padding:14px 0;border-bottom:1px solid var(--line);cursor:default}
+.lang .name{font-size:15px}
+.lang .meter{height:4px;border-radius:4px;background:var(--line);overflow:hidden}
+.lang .meter i{display:block;height:100%;width:0;background:var(--accent);border-radius:4px;transition:width 1.4s var(--ease)}
+.lang .lvl{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:right}
+.lang:hover .name,.lang.on .name{color:var(--accent)}
+.lang.on .lvl{color:var(--paper)}
+.hint{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:var(--s2)}
+.say{font-family:var(--serif);font-size:clamp(40px,5vw,72px);font-style:italic;color:var(--accent);min-height:1.2em;margin-bottom:var(--s2);transition:opacity .3s}
+h3.sub{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:var(--s2)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:var(--s3)}
+.filters button{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:var(--r-pill);border:1px solid var(--line-strong);background:transparent;color:var(--muted);cursor:pointer;transition:all .3s}
+.filters button.on{background:var(--paper);color:var(--bg);border-color:var(--paper)}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{padding:12px 18px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line);font-size:15px;transition:opacity .4s, transform .4s var(--ease), border-color .3s}
+.chip small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-top:2px}
+.chip.off{opacity:.18;transform:scale(.96)}
+.chip{cursor:default}
+.chip:hover,.chip.on{border-color:var(--accent);background:color-mix(in oklab,var(--accent) 12%,var(--surface));transform:translateY(-2px)}
+.certs{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cert{position:relative;padding:18px 44px 18px 18px;border-radius:var(--r-md);border:1px solid var(--line);display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:border-color .3s,background .3s,transform .4s var(--ease)}
+.cert i{position:absolute;right:16px;top:16px;font-style:normal;color:var(--muted);transition:transform .4s var(--ease),color .3s}
+.cert:hover{border-color:var(--accent);background:color-mix(in oklab,var(--accent) 9%,transparent);transform:translateY(-2px)}
+.cert:hover i{color:var(--accent);transform:translate(3px,-3px)}
+.cert b{font-weight:500}
+.cert span{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+/* BEYOND */
+.beyond{padding-block:var(--s6)}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{position:relative;padding:28px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);min-height:240px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;transform-style:preserve-3d;transition:transform .4s var(--ease), border-color .3s}
+.card:hover{border-color:var(--accent)}
+.card .big{position:absolute;top:14px;right:22px;font-family:var(--serif);font-size:96px;line-height:1;color:var(--accent);opacity:.9}
+.card h4{font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.05;margin-bottom:8px}
+.card p{font-size:14px;color:var(--muted)}
+
+/* CONTACT */
+.contact{min-height:90vh;display:flex;flex-direction:column;justify-content:center;padding-block:var(--s6)}
+.contact h2{font-size:clamp(64px,10vw,160px)}
+.contact .lede{font-size:18px;color:var(--muted);max-width:560px;margin:0 0 var(--s3)}
+.mail{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-family:var(--serif);font-size:clamp(26px,3vw,40px)}
+.mail a{text-decoration:none;border-bottom:1px solid var(--accent)}
+.copy{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:var(--r-pill);border:1px solid var(--line-strong);background:transparent;color:var(--muted);cursor:pointer}
+footer{position:relative;z-index:5;padding:28px clamp(20px,4vw,56px) 90px;font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;display:flex;justify-content:space-between;border-top:1px solid var(--line)}
+
+/* responsive */
+@media (max-width: 900px){
+  nav ul{display:none}
+  .panel{padding:24px 20px}
+  .chapter.col,.wide{max-width:100%}
+  .roles,.tiles,.eng{grid-template-columns:1fr}
+  .eg-detail{padding:24px 20px}
+  .eg-media{aspect-ratio:4/3}
+  .role.lead h4{font-size:28px}
+  .mecard .in{grid-template-columns:96px 1fr;gap:14px}
+  .mecard img{min-height:120px;height:120px}
+  .tile{min-height:200px}
+  .scrim{background:color-mix(in oklab,var(--bg) 45%,transparent)}
+  .status{border-radius:18px;align-self:stretch}
+  .ticker .track{font-size:22px}
+  .ticker .lab{padding:0 14px 0 20px}
+  .brandlogo{width:48px;height:48px}
+  .col{max-width:100%}
+  .ch-body{grid-template-columns:1fr;gap:var(--s3)}
+  .school{grid-template-columns:64px 1fr}
+  .school .loc{grid-column:2}
+  .crest{width:60px;height:60px;border-radius:14px;padding:7px}
+  .school .loc{text-align:left;padding-top:0}
+  .lang{grid-template-columns:84px 1fr;gap:6px 12px}
+  .lang .lvl{grid-column:1/-1;text-align:left}
+  .cards,.certs{grid-template-columns:1fr}
+  .hud{left:20px;right:20px;justify-content:center;font-size:10px}
+  #cityWord{font-size:32vw}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+
+/* ---------- Japanese typography ---------- */
+html[lang=ja] body{line-height:1.85;line-break:strict}
+html[lang=ja] em,html[lang=ja] .ch-company small{font-style:normal}
+html[lang=ja] h2{font-size:clamp(32px,4.4vw,64px);line-height:1.18;letter-spacing:0}
+html[lang=ja] .contact h2{font-size:clamp(44px,6.4vw,96px)}
+html[lang=ja] .school h3{font-size:clamp(26px,2.8vw,38px);line-height:1.2}
+html[lang=ja] .eg-tab b{font-size:18px}
+html[lang=ja] .g-over p{font-size:clamp(18px,2vw,26px);line-height:1.5}
+html[lang=ja] .role h4{font-size:21px;line-height:1.3}
+html[lang=ja] .role.lead h4{font-size:30px}
+html[lang=ja] .tile h4{font-size:28px}
+html[lang=ja] .eyebrow,html[lang=ja] .ch-index,html[lang=ja] .status,html[lang=ja] .tag,html[lang=ja] .filters button,html[lang=ja] h3.sub,html[lang=ja] .stats,html[lang=ja] .hint,html[lang=ja] .ticker .lab{font-family:var(--sans);letter-spacing:.08em}
+html[lang=ja] .ticker .track{font-size:24px}
+html[lang=ja] #cityWord{font-size:15vw;bottom:0;-webkit-text-stroke-color:color-mix(in oklab, var(--accent) 16%, transparent)}
+html[lang=ja] .kpi .num small{font-size:.3em}
+
+/* company logos: tile takes the logo's own shape and background */
+.ch-top{flex-wrap:wrap}
+.brandlogo{width:auto;height:64px;padding:0;overflow:hidden;border-radius:14px;box-shadow:0 0 0 1px var(--line-strong),0 18px 34px -18px #000}
+.brandlogo img{height:100%;width:auto;max-width:none;max-height:none}
+@media (max-width:900px){.brandlogo{width:auto;height:46px;border-radius:11px}}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<div class="ambient"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+<canvas id="globe" aria-hidden="true"></canvas>
+<div class="scrim"></div>
+<div id="cityWord" aria-hidden="true"></div>
+<div class="grain"></div>
+
+<nav>
+  <div class="me" id="me">
+    <a class="logo" href="#top" aria-label="Cédric Jaupitre — profile"><img src="assets/photos/portrait.jpg" alt=""><b style="font-weight:400">C<span>.</span>J</b></a>
+    <div class="mecard"><div class="in">
+      <img src="assets/photos/portrait.jpg" alt="Portrait of Cédric Jaupitre">
+      <div>
+        <h3>Cédric Jaupitre</h3>
+        <span class="k" data-i18n="me.k">Marketing &amp; Product · Singapore</span>
+        <p data-i18n="me.p1"></p>
+        <p data-i18n="me.p2"></p>
+        <div class="ctas"><a class="btn solid" href="#contact" data-i18n="me.cta">Get in touch</a><a class="btn" href="https://www.linkedin.com/in/cedric-jaupitre" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+      </div>
+    </div></div>
+  </div>
+  <div class="navr">
+    <ul>
+      <li><a href="#journey" data-nav="journey" data-i18n="nav.journey">Journey</a></li>
+      <li><a href="#education" data-nav="education" data-i18n="nav.education">Education</a></li>
+      <li><a href="#toolkit" data-nav="toolkit" data-i18n="nav.toolkit">Toolkit</a></li>
+      <li><a href="#engagements" data-nav="engagements" data-i18n="nav.engage">Leadership</a></li>
+      <li><a href="#beyond" data-nav="beyond" data-i18n="nav.beyond">Beyond work</a></li>
+      <li><a href="#contact" data-nav="contact" data-i18n="nav.contact">Contact</a></li>
+    </ul>
+    <div class="langsw" id="langsw" role="group" aria-label="Language">
+      <button data-lang="en" class="on">EN</button><button data-lang="ja">日本語</button><button data-lang="fr">FR</button>
+    </div>
+  </div>
+</nav>
+
+<div class="hud" aria-live="polite"><span class="dot"></span><b id="hudCity">Singapore</b><span id="hudCoord">1.35°N 103.82°E</span><span id="hudTime">--:--</span></div>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero wrap" data-scene data-city="Singapore" data-lat="1.35" data-lon="103.82" data-tz="Asia/Singapore" data-accent="#d9b38c" data-word="Singapore" data-fx="stars" data-zoom="1">
+    <div class="col" style="display:flex;flex-direction:column">
+      <div class="status"><i></i><span data-i18n="hero.status">Open to opportunities in Japan &amp; Asia · from May 2027</span></div>
+      <div class="greet" id="greet"><span>Bonjour,</span></div>
+      <h1>Cédric<span class="l2">Jaupitre</span></h1>
+      <div class="kana" data-i18n="hero.kana"></div>
+      <p class="lede" data-i18n="hero.lede">Marketing &amp; product, built between <strong>Paris, Tokyo, Shenzhen and Singapore</strong>. Currently an MSc in Marketing Management &amp; Digital candidate at <strong>ESSEC Business School, Singapore</strong>.</p>
+      <div class="stats">
+        <div><b>5</b><span data-i18n="hero.s1">companies</span></div>
+        <div><b>4</b><span data-i18n="hero.s2">countries</span></div>
+        <div><b>5</b><span data-i18n="hero.s3">languages</span></div>
+      </div>
+      <div class="ctas">
+        <a class="btn solid" href="#journey" data-i18n="cta.explore">Explore the journey ↓</a>
+        <a class="btn" href="cv-cedric-jaupitre.pdf" target="_blank" rel="noopener" data-i18n="cta.cv">Download CV</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ticker: what I'm looking for + contact (text lives in assets/content.js → 'ticker') -->
+  <div class="ticker">
+    <div class="lab"><i></i><span data-i18n="ticker.label">Open to</span></div>
+    <div class="view"><div class="track" id="track"></div></div>
+  </div>
+
+  <!-- ================= JOURNEY =================
+       Each <article class="chapter"> is one experience.
+       data-accent = colour of the site while this chapter is on screen
+       data-lat / data-lon / data-zoom = where the globe flies and how close
+       data-fx = animated background (defined in assets/scenes.js)
+       Logo  → drop a file at the path written in the <img> (assets/logos/…)
+       Photo → same thing in assets/photos/…  They show up automatically. -->
+  <section class="journey wrap" id="journey">
+    <div class="col">
+      <div class="eyebrow reveal" data-i18n="journey.eyebrow">Professional journey</div>
+      <h2 class="reveal" data-i18n="journey.title">Five companies,<br><em>one thread.</em></h2>
+    </div>
+
+    <article class="chapter col" data-scene data-city="Paris" data-lat="48.86" data-lon="2.35" data-tz="Europe/Paris" data-accent="#5b86ff" data-word="Paris" data-fx="circuit" data-zoom="2.6" data-globe="1">
+      <div class="panel reveal" data-panel>
+      <div class="ch-index reveal"><span class="n">01</span><span class="bar"></span><span data-i18n="ch1.meta">Jan – Jul 2026 · Paris, France</span></div>
+      <div class="ch-top reveal"><span class="brandlogo"><img data-auto src="assets/logos/samsung.png" alt="Samsung logo"></span><h3 class="ch-company">Samsung <small>Electronics</small></h3></div>
+      <p class="ch-role reveal" data-i18n="ch1.role">Product Manager Intern — Tablet, PC &amp; Wearables</p>
+      <div class="ch-body reveal">
+        <div class="kpi"><span class="num" data-count="1.2" data-dec="1" data-suffix="×">0</span><span class="cap" data-i18n="ch1.cap">YoY sales growth on the Galaxy Buds4 Pro launch</span></div>
+        <ul class="points">
+          <li data-i18n="ch1.p1">Drove <b>end-to-end go-to-market launches</b> for the Galaxy Buds4 Pro and Book 6 Series, sustaining Book 6 market volume through cross-functional campaigns.</li>
+          <li data-i18n="ch1.p2">Led <b>competitive intelligence &amp; benchmarking</b> for Galaxy Watch9 and Tab 12, shaping positioning recommendations.</li>
+          <li data-i18n="ch1.p3">Coordinated launch visibility and promotions with <b>retail &amp; channel partners</b> such as Amazon and Google.</li>
+        </ul>
+      </div>
+      <div class="tags reveal" data-i18n-list="ch1.tags"></div>
+      <div class="photo reveal"><img data-auto src="assets/photos/samsung.jpg" alt="At Samsung Electronics, Paris"><div class="lines"></div><span class="glyph">Galaxy</span><span class="label">Samsung · Paris</span></div>
+      </div>
+    </article>
+
+    <article class="chapter col" data-scene data-city="Tokyo" data-lat="35.68" data-lon="139.69" data-tz="Asia/Tokyo" data-accent="#ff5a4a" data-word="Tokyo" data-fx="tokyo" data-zoom="2.6" data-globe="1">
+      <div class="panel reveal" data-panel>
+      <div class="ch-index reveal"><span class="n">02</span><span class="bar"></span><span data-i18n="ch2.meta">Jul – Aug 2025 · Tokyo, Japan</span></div>
+      <div class="ch-top reveal"><span class="brandlogo"><img data-auto src="assets/logos/uniqlo.png" alt="UNIQLO logo"></span><h3 class="ch-company">UNIQLO <small>Fast Retailing</small></h3></div>
+      <p class="ch-role reveal" data-i18n="ch2.role">Global Management Program Participant</p>
+      <div class="ch-body reveal">
+        <div class="kpi"><span class="num" data-count="0.3" data-dec="1" data-pre="ch2.pre" data-suffix="%">0</span><span class="cap" data-i18n="ch2.cap">1 of 53 students selected from 15,000+ applicants worldwide</span></div>
+        <ul class="points">
+          <li data-i18n="ch2.p1">Selected for UNIQLO's <b>flagship leadership program</b> at Fast Retailing's global HQ.</li>
+          <li data-i18n="ch2.p2"><b>Co-led an international team</b> to build and pitch a global management strategy to UNIQLO Japan HQ senior executives.</li>
+        </ul>
+      </div>
+      <div class="tags reveal" data-i18n-list="ch2.tags"></div>
+      <div class="photo reveal"><img data-auto src="assets/photos/uniqlo.jpg" alt="At UNIQLO global HQ, Tokyo"><div class="lines"></div><span class="glyph">東京</span><span class="label">UNIQLO · Tokyo HQ</span></div>
+      </div>
+    </article>
+
+    <article class="chapter col" data-scene data-city="Lille" data-lat="50.63" data-lon="3.06" data-tz="Europe/Paris" data-accent="#e8895a" data-word="Lille" data-fx="waves" data-zoom="2.6" data-globe="1">
+      <div class="panel reveal" data-panel>
+      <div class="ch-index reveal"><span class="n">03</span><span class="bar"></span><span data-i18n="ch3.meta">Apr – Jun 2025 · Lille, France</span></div>
+      <div class="ch-top reveal"><span class="brandlogo"><img data-auto src="assets/logos/swisslife.png" alt="Swiss Life logo"></span><h3 class="ch-company">Swiss Life</h3></div>
+      <p class="ch-role reveal" data-i18n="ch3.role">Operational Marketing Intern</p>
+      <div class="ch-body reveal">
+        <div class="kpi"><span class="num" data-count="20" data-suffix="+">0</span><span class="cap" data-i18n="ch3.cap">end-to-end asset productions for a national rebranding</span></div>
+        <ul class="points">
+          <li data-i18n="ch3.p1">Coordinated <b>20+ asset productions</b> with 2 external agencies for a national rebranding and project launch.</li>
+          <li data-i18n="ch3.p2">Built <b>competitive benchmarks of 10+ players and 15+ solutions</b> that informed brand positioning.</li>
+        </ul>
+      </div>
+      <div class="tags reveal" data-i18n-list="ch3.tags"></div>
+      <div class="photo reveal"><img data-auto src="assets/photos/swisslife.jpg" alt="At Swiss Life, Lille"><div class="lines"></div><span class="glyph">Rebrand</span><span class="label">Swiss Life · Lille</span></div>
+      </div>
+    </article>
+
+    <article class="chapter col" data-scene data-city="Paris" data-lat="48.86" data-lon="2.35" data-tz="Europe/Paris" data-accent="#3fc1ad" data-word="Paris" data-fx="road" data-zoom="2.6" data-globe="1">
+      <div class="panel reveal" data-panel>
+      <div class="ch-index reveal"><span class="n">04</span><span class="bar"></span><span data-i18n="ch4.meta">Apr – Jul 2024 · Paris, France</span></div>
+      <div class="ch-top reveal"><span class="brandlogo"><img data-auto src="assets/logos/stellantis.png" alt="Stellantis logo"></span><h3 class="ch-company">Stellantis</h3></div>
+      <p class="ch-role reveal" data-i18n="ch4.role">Project Manager Intern</p>
+      <div class="ch-body reveal">
+        <div class="kpi"><span class="num" data-count="7" data-prefix="+" data-suf="ch4.suf">0</span><span class="cap" data-i18n="ch4.cap">conversion-rate lift from pricing analysis &amp; CRM campaigns</span></div>
+        <ul class="points">
+          <li data-i18n="ch4.p1">Analysed <b>pricing &amp; performance across 6+ online marketplaces</b> and ran CRM campaigns to lift commercial performance.</li>
+          <li data-i18n="ch4.p2">Designed <b>KPIs and a sourcing tool</b> that streamlined procurement across 4 suppliers.</li>
+        </ul>
+      </div>
+      <div class="tags reveal" data-i18n-list="ch4.tags"></div>
+      <div class="photo reveal"><img data-auto src="assets/photos/stellantis.jpg" alt="At Stellantis, Paris"><div class="lines"></div><span class="glyph">+7 pts</span><span class="label">Stellantis · Paris</span></div>
+      </div>
+    </article>
+
+    <article class="chapter col" data-scene data-city="Paris" data-lat="48.86" data-lon="2.35" data-tz="Europe/Paris" data-accent="#cfae7c" data-word="Paris" data-fx="muji" data-zoom="2.6" data-globe="1">
+      <div class="panel reveal" data-panel>
+      <div class="ch-index reveal"><span class="n">05</span><span class="bar"></span><span data-i18n="ch5.meta">May – Aug 2023 · Paris, France</span></div>
+      <div class="ch-top reveal"><span class="brandlogo"><img data-auto src="assets/logos/muji.png" alt="MUJI logo"></span><h3 class="ch-company">MUJI <small>無印良品</small></h3></div>
+      <p class="ch-role reveal" data-i18n="ch5.role">Online Sales Assistant</p>
+      <div class="ch-body reveal">
+        <div class="kpi"><span class="num" data-count="100" data-suffix="+">0</span><span class="cap" data-i18n="ch5.cap">targeted CRM initiatives across online and in-store</span></div>
+        <ul class="points">
+          <li data-i18n="ch5.p1">Drove <b>cross-channel integration</b> between online and brick-and-mortar stores.</li>
+          <li data-i18n="ch5.p2">Executed <b>100+ targeted CRM initiatives</b> to improve customer conversion and retention.</li>
+        </ul>
+      </div>
+      <div class="tags reveal" data-i18n-list="ch5.tags"></div>
+      <div class="photo reveal"><img data-auto src="assets/photos/muji.jpg" alt="At MUJI, Paris"><div class="lines"></div><span class="glyph">無印良品</span><span class="label">MUJI · Paris</span></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= EDUCATION ================= -->
+  <section class="education wrap" id="education" data-scene data-city="Singapore" data-lat="1.35" data-lon="103.82" data-tz="Asia/Singapore" data-accent="#6fcf97" data-word="Campus" data-fx="stars" data-zoom="1.5">
+    <div class="col">
+      <div class="eyebrow reveal" data-i18n="edu.eyebrow">Education</div>
+      <h2 class="reveal" data-i18n="edu.title">Three campuses,<br><em>two continents.</em></h2>
+      <div class="panel reveal" data-panel><div class="schools">
+        <div class="school" data-city="Singapore" data-lat="1.35" data-lon="103.82" data-tz="Asia/Singapore" data-accent="#6fcf97">
+          <span class="crest"><img src="assets/logos/essec.png" alt="ESSEC Business School logo"></span>
+          <div><span class="yr">2026–27</span><h3 data-i18n="edu1.name">ESSEC Business School</h3><p data-i18n="edu1.p">MSc in Marketing Management &amp; Digital (MMD) · Asia-Pacific campus</p><span class="shot"><img data-auto src="assets/photos/essec.jpg" alt="ESSEC Asia-Pacific campus, Singapore"><span class="cap" data-i18n="edu.essec.cap"></span></span><span class="badge" data-i18n="edu1.badge">#2 worldwide · QS 2027</span></div>
+          <span class="loc" data-i18n="edu1.loc">Singapore</span>
+        </div>
+        <div class="school" data-city="Lille" data-lat="50.63" data-lon="3.06" data-tz="Europe/Paris" data-accent="#e2b33b">
+          <span class="crest"><img src="assets/logos/edhec.png" alt="EDHEC Business School logo"></span>
+          <div><span class="yr">2022–26</span><h3 data-i18n="edu2.name">EDHEC Business School</h3><p data-i18n="edu2.p">BBA · Major in Marketing, specialisation in Marketing Intelligence &amp; Innovation</p><span class="shot"><img data-auto src="assets/photos/edhec.jpg" alt="EDHEC campus, Lille"><span class="cap" data-i18n="edu.edhec.cap"></span></span></div>
+          <span class="loc" data-i18n="edu2.loc">Lille, France</span>
+        </div>
+        <div class="school" data-city="Shenzhen" data-lat="22.54" data-lon="114.06" data-tz="Asia/Shanghai" data-accent="#b993ff">
+          <span class="crest"><img src="assets/logos/cuhk.png" alt="The Chinese University of Hong Kong, Shenzhen logo"></span>
+          <div><span class="yr" data-i18n="edu3.yr">Fall 2024</span><h3 data-i18n="edu3.name">CUHK Shenzhen</h3><p data-i18n="edu3.p">Exchange semester · Big Data, Digital Customer Analytics (R), Pricing Strategy, SQL, Mandarin</p><span class="shot"><img data-auto src="assets/photos/cuhk.jpg" alt="Welcome day at CUHK Shenzhen, 2024"><span class="cap" data-i18n="edu.cuhk.cap"></span></span></div>
+          <span class="loc" data-i18n="edu3.loc">Shenzhen, China</span>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- ================= TOOLKIT =================
+       Each language row has its own background (data-fx) and colour (data-accent). -->
+  <section class="toolkit wrap" id="toolkit" data-scene data-city="Tokyo" data-lat="35.68" data-lon="139.69" data-tz="Asia/Tokyo" data-accent="#ff9ebb" data-word="" data-fx="fuji" data-zoom="1" data-globe="0">
+    <div class="col">
+      <div class="eyebrow reveal" data-i18n="tk.eyebrow">Toolkit</div>
+      <h2 class="reveal" data-i18n="tk.title">Fluent in markets,<br><em>and in five languages.</em></h2>
+      <div class="grid2">
+        <div class="panel reveal" data-panel>
+          <div class="hint" data-i18n="tk.hint">Hover a language</div>
+          <div class="say" id="say">こんにちは</div>
+          <div class="langs">
+            <div class="lang" data-say="Bonjour" data-fx="paris" data-accent="#7d9bff"><span class="name" data-i18n="lang.fr">French</span><span class="meter"><i data-w="100"></i></span><span class="lvl" data-i18n="lvl.fr">Native</span></div>
+            <div class="lang" data-say="Hello" data-fx="rings" data-accent="#d9b38c"><span class="name" data-i18n="lang.en">English</span><span class="meter"><i data-w="100"></i></span><span class="lvl" data-i18n="lvl.en">C1</span></div>
+            <div class="lang on" data-say="こんにちは" data-fx="fuji" data-accent="#ff9ebb"><span class="name" data-i18n="lang.ja">Japanese</span><span class="meter"><i data-w="74"></i></span><span class="lvl" data-i18n="lvl.ja">JLPT N3 · N2 exam Dec 2026</span></div>
+            <div class="lang" data-say="Hola" data-fx="sol" data-accent="#ffb347"><span class="name" data-i18n="lang.es">Spanish</span><span class="meter"><i data-w="50"></i></span><span class="lvl" data-i18n="lvl.es">B1</span></div>
+            <div class="lang" data-say="你好" data-fx="ink" data-accent="#ff6b5a"><span class="name" data-i18n="lang.zh">Mandarin</span><span class="meter"><i data-w="28"></i></span><span class="lvl" data-i18n="lvl.zh">HSK 2</span></div>
+          </div>
+        </div>
+        <div class="panel reveal" data-panel>
+          <h3 class="sub" data-i18n="tk.tools">Tools &amp; skills</h3>
+          <div class="hint" data-i18n="tk.hint2">Hover a tool to see it at work</div>
+          <div class="filters" id="filters">
+            <button class="on" data-f="all" data-i18n="f.all">All</button><button data-f="data" data-i18n="f.data">Analytics</button><button data-f="code" data-i18n="f.code">Code</button><button data-f="creative" data-i18n="f.creative">Creative &amp; AI</button>
+          </div>
+          <div class="chips" id="chips">
+            <span class="chip" tabindex="0" data-g="data" data-ui="sheet" data-accent="#5fd39a" data-title="Excel">Excel<small>Advanced</small></span>
+            <span class="chip" tabindex="0" data-g="data" data-ui="dash" data-accent="#6fa8ff" data-title="Tableau">Tableau<small>Dataviz</small></span>
+            <span class="chip" tabindex="0" data-g="data" data-ui="dash" data-accent="#f2c94c" data-title="Power BI">Power BI<small>Dataviz</small></span>
+            <span class="chip" tabindex="0" data-g="data" data-ui="analytics" data-accent="#ff9f43" data-title="Google Analytics 4">Google Analytics 4<small>Certified</small></span>
+            <span class="chip" tabindex="0" data-g="data" data-ui="stats" data-accent="#7db4ff" data-title="SPSS">SPSS<small>Stats</small></span>
+            <span class="chip" tabindex="0" data-g="data" data-ui="survey" data-accent="#5ad1c8" data-title="Qualtrics">Qualtrics<small>Surveys</small></span>
+            <span class="chip" tabindex="0" data-g="code" data-ui="sql" data-accent="#7db4ff" data-title="SQL">SQL<small>Databases</small></span>
+            <span class="chip" tabindex="0" data-g="code" data-ui="py" data-accent="#f2c94c" data-title="Python">Python<small>Basic</small></span>
+            <span class="chip" tabindex="0" data-g="code" data-ui="r" data-accent="#6fa8ff" data-title="R">R<small>Basic</small></span>
+            <span class="chip" tabindex="0" data-g="code" data-ui="web" data-accent="#ff8f6b" data-title="HTML & scraping">HTML &amp; scraping<small>Web</small></span>
+            <span class="chip" tabindex="0" data-g="creative" data-ui="design" data-accent="#ff8fb0" data-title="Adobe Suite">Adobe Suite<small>Photoshop</small></span>
+            <span class="chip" tabindex="0" data-g="creative" data-ui="chat" data-accent="#d9b38c" data-title="AI / LLM tools">AI / LLM tools<small>Daily use</small></span>
+          </div>
+        </div>
+        <div class="panel reveal" data-panel>
+          <h3 class="sub" data-i18n="tk.certs">Certifications</h3>
+          <div class="certs">
+            <a class="cert" href="https://www.mckinsey.com/forward/overview" target="_blank" rel="noopener"><b>McKinsey Forward Program</b><span>McKinsey &amp; Company</span><i>↗</i></a>
+            <a class="cert" href="https://skillshop.withgoogle.com/" target="_blank" rel="noopener"><b>Google Analytics 4</b><span>Google Skillshop</span><i>↗</i></a>
+            <a class="cert" href="https://www.insidelvmh.com/article/discover-the-inside-lvmh-certificate" target="_blank" rel="noopener"><b>INSIDE LVMH</b><span>LVMH</span><i>↗</i></a>
+            <a class="cert" href="https://academy.hubspot.com/courses/inbound-marketing" target="_blank" rel="noopener"><b>Inbound Marketing</b><span>HubSpot Academy</span><i>↗</i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LEADERSHIP & COMMITMENTS =================
+       One <article class="role"> per commitment. Texts are in assets/content.js (keys eg1 … eg5). -->
+  <section class="engage wrap" id="engagements" data-scene data-city="Singapore" data-lat="1.35" data-lon="103.82" data-tz="Asia/Singapore" data-accent="#4fb8d8" data-word="" data-fx="ocean" data-zoom="1" data-globe="0">
+    <div class="col full">
+      <div class="eyebrow reveal" data-i18n="eg.eyebrow">Leadership &amp; commitments</div>
+      <h2 class="reveal" data-i18n="eg.title">Leading, representing,<br><em>building communities.</em></h2>
+      <div class="hint reveal" data-i18n="eg.hint">Select a commitment</div>
+      <div class="eng">
+        <div class="eg-list reveal" role="tablist">
+          <button class="eg-tab on" data-eg="1" role="tab"><span class="rn">01</span><span class="tx"><span class="rk" data-i18n="eg1.k"></span><b data-i18n="eg1.h"></b></span><i>→</i></button>
+          <button class="eg-tab" data-eg="2" role="tab"><span class="rn">02</span><span class="tx"><span class="rk" data-i18n="eg2.k"></span><b data-i18n="eg2.h"></b></span><i>→</i></button>
+          <button class="eg-tab" data-eg="3" role="tab"><span class="rn">03</span><span class="tx"><span class="rk" data-i18n="eg3.k"></span><b data-i18n="eg3.h"></b></span><i>→</i></button>
+          <button class="eg-tab" data-eg="4" role="tab"><span class="rn">04</span><span class="tx"><span class="rk" data-i18n="eg4.k"></span><b data-i18n="eg4.h"></b></span><i>→</i></button>
+          <button class="eg-tab" data-eg="5" role="tab"><span class="rn">05</span><span class="tx"><span class="rk" data-i18n="eg5.k"></span><b data-i18n="eg5.h"></b></span><i>→</i></button>
+        </div>
+        <div class="eg-detail panel reveal" data-panel="flat">
+          <div class="eg-body" id="egBody">
+            <span class="rk" id="egK"></span>
+            <h3 id="egH"></h3>
+            <p id="egP"></p>
+            <div class="eg-links" id="egLinks"></div>
+            <div class="eg-media" id="egMedia"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BEYOND WORK =================
+       Each tile switches the whole background: data-fx = scene, data-accent = colour. -->
+  <section class="beyond wrap" id="beyond" data-scene data-city="Singapore" data-lat="1.35" data-lon="103.82" data-tz="Asia/Singapore" data-accent="#ff8f6b" data-word="" data-fx="stadium" data-zoom="1" data-globe="0">
+    <div class="col wide">
+      <div class="eyebrow reveal" data-i18n="by.eyebrow">Beyond work</div>
+      <h2 class="reveal" data-i18n="by.title">What keeps me<br><em>sharp.</em></h2>
+      <div class="hint reveal" data-i18n="by.hint">Pick one to change the scene</div>
+      <div class="tiles" id="tiles">
+        <button class="tile panel reveal on" data-panel data-fx="stadium" data-accent="#ff8f6b"><span class="kick" data-i18n="by1.k">Semi-professional</span><span class="big">01</span><h4 data-i18n="by1.h">Table tennis</h4><p data-i18n="by1.p">Semi-professional player, youth coach and certified referee.</p></button>
+        <button class="tile panel reveal" data-panel data-fx="concert" data-accent="#e3b45c"><span class="kick" data-i18n="by2.k">7+ years</span><span class="big">02</span><h4 data-i18n="by2.h">Piano</h4><p data-i18n="by2.p">Playing for over seven years.</p></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section class="contact wrap" id="contact" data-scene data-city="Tokyo" data-lat="35.68" data-lon="139.69" data-tz="Asia/Tokyo" data-accent="#d9b38c" data-word="Hello" data-fx="stars" data-zoom="1.25">
+    <div class="col">
+      <div class="eyebrow reveal" data-i18n="ct.eyebrow">Contact</div>
+      <h2 class="reveal" data-i18n="ct.title">Let's <em>talk.</em></h2>
+      <div class="panel reveal" data-panel>
+      <p class="lede" data-i18n="ct.lede">Looking for an internship, full-time role, graduate program or V.I.E in Asia — Japan first — from May 2027.</p>
+      <div class="mail reveal">
+        <a href="mailto:cedric.jaupitre@essec.edu" id="mail">cedric.jaupitre@essec.edu</a>
+        <button class="copy" id="copy" data-i18n="copy">Copy</button>
+      </div>
+      <div class="ctas reveal">
+        <a class="btn solid" href="https://www.linkedin.com/in/cedric-jaupitre" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn" href="cv-cedric-jaupitre.pdf" target="_blank" rel="noopener" data-i18n="cta.cv">Download CV</a>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MINI-GAME (assets/game.js) ================= -->
+  <section class="play wrap" id="play" data-scene data-city="Tokyo" data-lat="35.68" data-lon="139.69" data-tz="Asia/Tokyo" data-accent="#ff8f6b" data-word="" data-fx="stars" data-zoom="1" data-globe="0.18">
+    <div class="col full" style="max-width:1100px">
+      <div class="eyebrow reveal" data-i18n="gm.eyebrow">One last rally</div>
+      <h2 class="reveal" data-i18n="gm.title">Can you return<br><em>my serve?</em></h2>
+      <div class="game panel reveal" data-panel="flat">
+        <div class="g-top"><b id="gScore">Rally 0</b><span data-i18n="gm.how">Move your mouse or finger up and down · or use ↑ ↓</span></div>
+        <div class="g-wrap"><canvas id="game"></canvas>
+          <div class="g-over show" id="gOver"><p id="gMsg"></p><div class="row"><button class="btn solid" id="gBtn">Serve</button><a class="btn" id="gCta" href="#contact" data-i18n="gm.cta" style="display:none">Let's talk →</a></div></div>
+        </div>
+        <ul class="g-facts" id="gFacts"></ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true"><button class="x" aria-label="Close">×</button><button class="pv" aria-label="Previous">‹</button><img id="lbImg" alt=""><p id="lbCap"></p><button class="nx" aria-label="Next">›</button></div>
+
+<footer><span>© 2026 Cédric Jaupitre</span><span>Singapore · Paris · Tokyo</span></footer>
+
+<script src="assets/globe-data.js"></script>
+<script src="assets/photos.js"></script>
+<script src="assets/content.js"></script>
+<script src="assets/scenes.js"></script>
+<script src="assets/app.js"></script>
+<script src="assets/game.js"></script>
+</body>
+</html>
