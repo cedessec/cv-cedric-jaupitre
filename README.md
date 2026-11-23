@@ -16,3 +16,4 @@ Static website (no build step). Open `index.html` in a browser to preview.
 
 The site opens in the visitor's browser language (French, Japanese, otherwise English).
 Direct links: `?lang=ja`, `?lang=fr`, `?lang=en`.
+
