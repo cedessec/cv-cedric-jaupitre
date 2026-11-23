@@ -488,6 +488,9 @@ h2{font-weight:400;font-size:clamp(54px,7.6vw,116px);line-height:.92;letter-spac
 h2 em{font-weight:500}
 .hero h1{font-weight:400;font-size:clamp(76px,12vw,190px);line-height:.84;letter-spacing:-.02em}
 .hero h1 .l2{font-weight:500;background:linear-gradient(100deg,var(--accent) 0%,#f6e9cf 45%,var(--accent) 90%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 9s ease-in-out infinite}
+/* the gradient only paints inside the text box: give the italic J room below and on the left so its tail is not cut */
+.hero h1 .l2{padding:0 .08em .2em .12em;margin:0 0 -.2em -.12em}
+.hero .kana{margin-top:34px}
 @keyframes sheen{0%,100%{background-position:0% 0}50%{background-position:100% 0}}
 .greet{font-weight:500;color:var(--gold)}
 .ch-company{font-weight:400;font-size:clamp(54px,7vw,104px)}
