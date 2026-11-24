@@ -87,11 +87,14 @@ let W, H, DPR, base, cx, cy;
 const fxc = $('#fx'), fctx = fxc.getContext('2d');
 let fxCur = null, fxState = null, fxWant = 'stars', fxK = 0, fxAcc = '#d9b38c', fxHold = 0;
 function size() {
+  /* the canvases are sized in pixels (not 100vh), so they never stretch when the phone's address bar shows or hides */
   DPR = Math.min(2, devicePixelRatio || 1);
-  W = innerWidth; H = innerHeight;
-  cv.width = W * DPR; cv.height = H * DPR; fxc.width = W * DPR; fxc.height = H * DPR;
+  const nW = document.documentElement.clientWidth, nH = Math.max(innerHeight, document.documentElement.clientHeight);
+  if (W === nW && H && Math.abs(nH - H) < 160) return;          // address bar moving: keep the current drawing
+  W = nW; H = nH;
+  for (const c of [cv, fxc]) { c.width = W * DPR; c.height = H * DPR; c.style.width = W + 'px'; c.style.height = H + 'px'; }
   const mob = W < 900;
-  base = mob ? W * 0.42 : Math.min(W * 0.235, H * 0.38); cx = mob ? W * 0.5 : W * 0.72; cy = mob ? H * 0.6 : H * 0.5;
+  base = mob ? W * 0.44 : Math.min(W * 0.235, H * 0.38); cx = mob ? W * 0.5 : W * 0.72; cy = mob ? H * 0.6 : H * 0.5;
   if (fxCur) fxState = window.FX[fxCur].init(W, H);
 }
 size(); addEventListener('resize', size);
@@ -192,6 +195,7 @@ function frame(now) {
   const d = ((tLon - lon0 + 540) % 360) - 180, e = reduce ? 1 : 0.05;
   lon0 += d * e; lat0 += (tLat - lat0) * e; zoom += (tZoom - zoom) * (reduce ? 1 : 0.045);
   if (!drag && (Math.abs(velLon) > 0.02 || Math.abs(velLat) > 0.02)) { velLon *= 0.94; velLat *= 0.94; tLon = lon0 = lon0 + velLon; tLat = lat0 = Math.max(-85, Math.min(85, lat0 + velLat)); }   // inertia after a throw
+  if (W < 900) { const tcy = current === scenes[0] ? H * 0.9 : H * 0.5, tb = current === scenes[0] ? W * 0.62 : W * 0.44; cy += (tcy - cy) * (reduce ? 1 : 0.06); base += (tb - base) * (reduce ? 1 : 0.06); }
   drawGlobe();
   if (current === scenes[0] && !dragged && W >= 900) { ctx.font = PREMIUM ? 'italic 500 21px "Cormorant Garamond", serif' : '700 22px Caveat, Yomogi, cursive'; ctx.fillStyle = 'rgba(239,235,227,.6)'; ctx.textAlign = 'center'; ctx.fillText('↻ ' + T('hero.drag'), cx, cy + base * zoom + 34); ctx.textAlign = 'left'; }
   // background scene: fade the old one out, wait for the globe to arrive, fade the new one in

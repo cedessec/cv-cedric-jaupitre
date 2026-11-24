@@ -391,21 +391,25 @@ FX.concert = {
 
 /* Japanese: Mount Fuji, sakura in the wind, kanji written by hand */
 FX.fuji = {
-  init() {
+  init(W) {
+    const narrow = W < 760;
     return {
-      petals: Array.from({ length: 70 }, () => ({ x: R(0, 1.2), y: R(-0.1, 1), s: R(5, 11), vx: R(0.5, 1.3), vy: R(0.25, 0.7), r: R(0, 6.28), vr: R(-2, 2), ph: R(0, 6.28) })),
-      cols: [['一期一会', 0.58, 0.13], ['七転八起', 0.95, 0.12], ['継続は力なり', 0.65, 0.15], ['挑戦', 0.58, 0.46], ['日本語', 0.975, 0.5]].map(([txt, x, y], i) => ({ txt, x, y, ph: i * 1.3 })),
+      narrow,
+      petals: Array.from({ length: narrow ? 34 : 70 }, () => ({ x: R(0, 1.2), y: R(-0.1, 1), s: R(5, 11), vx: R(0.5, 1.3), vy: R(0.25, 0.7), r: R(0, 6.28), vr: R(-2, 2), ph: R(0, 6.28) })),
+      /* phones: two short columns on the right edge only, so they never pile up behind the title */
+      cols: (narrow ? [['七転八起', 0.93, 0.30], ['日本語', 0.93, 0.62]] : [['一期一会', 0.58, 0.13], ['七転八起', 0.95, 0.12], ['継続は力なり', 0.65, 0.15], ['挑戦', 0.58, 0.46], ['日本語', 0.975, 0.5]]).map(([txt, x, y], i) => ({ txt, x, y, ph: i * 1.3 })),
       wind: Array.from({ length: 5 }, (_, i) => ({ y: R(0.12, 0.7), ph: R(0, 1), sp: R(0.5, 1) }))
     };
   },
   draw(c, s, t, dt, W, H, acc, A) {
-    const K = pencil(c, t, s), wide = W > 900, px = wide ? W * 0.74 : W * 0.5, py = H * 0.4, base = H * 0.95, hw = wide ? W * 0.36 : W * 0.6, m = Math.min(W, H);
+    const K = pencil(c, t, s), wide = W > 900, px = wide ? W * 0.74 : W * 0.5, py = wide ? H * 0.4 : H * 0.6, base = H * 0.95, hw = wide ? W * 0.36 : W * 0.66, m = Math.min(W, H);
     // sun: scribbled
-    const sx = px + hw * 0.36, sy = py - H * 0.07, sr = m * 0.15;
+    const sx = px + hw * (wide ? 0.36 : 0.3), sy = py - H * (wide ? 0.07 : 0.1), sr = m * (wide ? 0.15 : 0.2);
     ink(c, acc); A(0.9); K.circ(sx, sy, sr, K.P(0, 1.2)); A(0.5); K.hatch(() => { c.beginPath(); c.arc(sx, sy, sr, 0, 7); }, sx - sr, sy - sr, sr * 2, sr * 2, 8, K.P(0.5, 1.4));
     // kanji columns, appearing stroke by stroke
     c.fillStyle = P;
-    for (const k of s.cols) [...k.txt].forEach((ch, i) => { A((0.28 + 0.2 * (0.5 + 0.5 * Math.sin(t * 0.0005 + k.ph))) * K.P(1.5 + k.ph * 0.3 + i * 0.25, 0.5)); K.text(ch, k.x * W, k.y * H + i * 44, 36, 0, HAND_JP, 'center'); });
+    const ks = s.narrow ? 24 : 36, kl = s.narrow ? 30 : 44;
+    for (const k of s.cols) [...k.txt].forEach((ch, i) => { A((0.28 + 0.2 * (0.5 + 0.5 * Math.sin(t * 0.0005 + k.ph))) * K.P(1.5 + k.ph * 0.3 + i * 0.25, 0.5)); K.text(ch, k.x * W, k.y * H + i * kl, ks, 0, HAND_JP, 'center'); });
     // mountain
     const side = sg => { const pts = []; for (let k = 0; k <= 1.001; k += 0.05) { const a = 1 - k, x0 = px + sg * hw, x1 = px + sg * hw * 0.34, x2 = px + sg * hw * 0.075, y1 = base - (base - py) * 0.42; pts.push([a * a * x0 + 2 * a * k * x1 + k * k * x2, a * a * base + 2 * a * k * y1 + k * k * py]); } return pts; };
     const L = side(-1), Rr = side(1), crater = [[px - hw * 0.035, py + 7], [px + hw * 0.02, py + 2]];

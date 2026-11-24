@@ -12,6 +12,7 @@ window.I18N = {
 
 /* ------------------------- ENGLISH ------------------------- */
 en: {
+  'gm.how2': 'Slide your finger left and right',
   'ed.with': 'Worked &amp; studied with', 'ed.lang': 'Languages', 'ed.badge': 'Open to work · Japan & Asia · May 2027 · ',
   'ref.btn': 'Read the reference letter', 'edu.view': 'View programme',
   'edu2.badge': '#2 BBA in France · Challenges 2026', 'edu3.badge': 'CUHK · #18 worldwide · QS 2027', 'hero.drag': 'drag the globe', 'eg.site': 'Website', 'eg.li': 'LinkedIn',
@@ -103,6 +104,7 @@ en: {
 
 /* ------------------------- 日本語 ------------------------- */
 ja: {
+  'gm.how2': '指を左右にスライドして操作します',
   'ed.with': '経験した企業・学校', 'ed.lang': '言語', 'ed.badge': '2027年5月より · 日本・アジアで就職希望 · ',
   'ref.btn': '推薦状を読む', 'edu.view': 'プログラムを見る',
   'edu2.badge': 'フランスBBAランキング2位 · Challenges 2026', 'edu3.badge': '香港中文大学 · QS世界ランキング2027 · 18位', 'hero.drag': '地球儀をドラッグ', 'eg.site': 'ウェブサイト', 'eg.li': 'LinkedIn',
@@ -194,6 +196,7 @@ ja: {
 
 /* ------------------------- FRANÇAIS ------------------------- */
 fr: {
+  'gm.how2': 'Faites glisser le doigt de gauche à droite',
   'ed.with': 'Entreprises &amp; écoles', 'ed.lang': 'Langues', 'ed.badge': 'Disponible · Japon & Asie · Mai 2027 · ',
   'ref.btn': 'Lire la lettre de recommandation', 'edu.view': 'Voir le programme',
   'edu2.badge': '2e BBA de France · Challenges 2026', 'edu3.badge': 'CUHK · 18e mondial · QS 2027', 'hero.drag': 'faites tourner le globe', 'eg.site': 'Site web', 'eg.li': 'LinkedIn',

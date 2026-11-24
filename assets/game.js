@@ -8,11 +8,21 @@ const cv = document.getElementById('game'); if (!cv) return;
 const ctx = cv.getContext('2d'), wrap = cv.parentNode, over = document.getElementById('gOver'), msg = document.getElementById('gMsg'), btn = document.getElementById('gBtn'), cta = document.getElementById('gCta');
 const scoreEl = document.getElementById('gScore'), factsEl = document.getElementById('gFacts');
 const T = k => window.T(k), css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-let W = 0, H = 0, DPR = 1, running = false, unlocked = 0, rally = 0, best = 0, state = 'idle', last = 0, got = 0;
+let W = 0, H = 0, DPR = 1, VERT = false, CW = 0, CH = 0, running = false, unlocked = 0, rally = 0, best = 0, state = 'idle', last = 0, got = 0;
 let ball = { x: 0, y: 0, vx: 0, vy: 0 }, me = 0.5, him = 0.5, trail = [], flash = 0;
 const PH = 0.22;                     // paddle height (share of the table height)
 
-function size() { DPR = Math.min(2, devicePixelRatio || 1); W = wrap.clientWidth; H = Math.max(230, Math.min(460, W * 0.46)); cv.style.height = H + 'px'; cv.width = W * DPR; cv.height = H * DPR; draw(); }
+/* phones: the table turns vertical — you play at the bottom, Cédric at the top, and you slide left/right.
+   The game logic stays the same; W is always the length of the table and H its width. */
+function size() {
+  DPR = Math.min(2, devicePixelRatio || 1); CW = wrap.clientWidth; VERT = CW < 600;
+  CH = VERT ? Math.round(Math.max(380, Math.min(innerHeight * 0.62, CW * 1.5))) : Math.max(230, Math.min(460, CW * 0.46));
+  W = VERT ? CH : CW; H = VERT ? CW : CH;
+  cv.style.height = CH + 'px'; cv.width = CW * DPR; cv.height = CH * DPR;
+  wrap.style.cursor = VERT ? 'ew-resize' : '';
+  const how = document.querySelector('[data-i18n="gm.how"]'); if (how) how.textContent = T(VERT ? 'gm.how2' : 'gm.how');
+  draw();
+}
 function facts() { return T('gm.facts') || []; }
 function renderFacts() {
   const f = facts();
@@ -59,14 +69,17 @@ function loop(now) {
 }
 function draw() {
   const acc = css('--accent') || '#d9b38c', P = css('--game-ink') || '#efebe3';
-  ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, W, H);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0); ctx.clearRect(0, 0, CW, CH);
+  if (VERT) ctx.setTransform(0, -DPR, DPR, 0, 0, CH * DPR);   // table rotated: logical left (you) = bottom of the screen
   // table
   ctx.strokeStyle = P; ctx.globalAlpha = 0.28; ctx.lineWidth = 1.2; ctx.strokeRect(10, 10, W - 20, H - 20);
   ctx.globalAlpha = 0.14; ctx.beginPath(); ctx.moveTo(10, H / 2); ctx.lineTo(W - 10, H / 2); ctx.stroke();
   ctx.globalAlpha = 0.5; ctx.setLineDash([6, 8]); ctx.beginPath(); ctx.moveTo(W / 2, 4); ctx.lineTo(W / 2, H - 4); ctx.stroke(); ctx.setLineDash([]);
-  ctx.font = '500 11px "JetBrains Mono", monospace'; ctx.fillStyle = P; ctx.globalAlpha = 0.5; ctx.textAlign = 'left'; ctx.fillText(T('gm.you').toUpperCase(), 24, 32); ctx.textAlign = 'right'; ctx.fillStyle = acc; ctx.globalAlpha = 0.9; ctx.fillText('CÉDRIC', W - 24, 32); ctx.textAlign = 'left';
-  // big rally number
-  ctx.font = '400 ' + Math.round(H * 0.5) + 'px "Instrument Serif", serif'; ctx.textAlign = 'center'; ctx.fillStyle = flash > 0 ? acc : P; ctx.globalAlpha = 0.06 + flash * 0.2; ctx.fillText(String(rally), W / 2, H * 0.66); ctx.textAlign = 'left';
+  // labels and rally number are written upright, in screen coordinates
+  ctx.save(); ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.font = '500 11px "JetBrains Mono", monospace'; ctx.fillStyle = P; ctx.globalAlpha = 0.5; ctx.textAlign = 'left'; ctx.fillText(T('gm.you').toUpperCase(), 24, VERT ? CH - 22 : 32); ctx.textAlign = 'right'; ctx.fillStyle = acc; ctx.globalAlpha = 0.9; ctx.fillText('CÉDRIC', CW - 24, 32); ctx.textAlign = 'left';
+  ctx.font = '400 ' + Math.round(Math.min(CW, CH) * 0.5) + 'px "Instrument Serif", serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = flash > 0 ? acc : P; ctx.globalAlpha = 0.06 + flash * 0.2; ctx.fillText(String(rally), CW / 2, CH / 2); ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+  ctx.restore();
   // paddles
   const ph = H * PH, rr = (x, y, w, h) => { ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x, y, w, h, 6) : ctx.rect(x, y, w, h); ctx.fill(); };
   ctx.globalAlpha = 1; ctx.fillStyle = P; rr(20, me * H - ph / 2, 12, ph); ctx.fillStyle = acc; rr(W - 32, Math.max(ph / 2, Math.min(H - ph / 2, him * H)) - ph / 2, 12, ph);
@@ -75,11 +88,11 @@ function draw() {
   ctx.globalAlpha = 1;
 }
 // controls: mouse / finger / arrow keys
-const move = e => { const r = cv.getBoundingClientRect(); me = Math.max(PH / 2, Math.min(1 - PH / 2, (e.clientY - r.top) / r.height)); if (!running) draw(); };
+const move = e => { const r = cv.getBoundingClientRect(), k = VERT ? (e.clientX - r.left) / r.width : (e.clientY - r.top) / r.height; me = Math.max(PH / 2, Math.min(1 - PH / 2, k)); if (!running) draw(); };
 wrap.addEventListener('pointermove', move); wrap.addEventListener('pointerdown', move);
-addEventListener('keydown', e => { if (!running) return; if (e.key === 'ArrowUp') { me = Math.max(PH / 2, me - 0.08); e.preventDefault(); } if (e.key === 'ArrowDown') { me = Math.min(1 - PH / 2, me + 0.08); e.preventDefault(); } });
+addEventListener('keydown', e => { if (!running) return; if (e.key === (VERT ? 'ArrowLeft' : 'ArrowUp')) { me = Math.max(PH / 2, me - 0.08); e.preventDefault(); } if (e.key === (VERT ? 'ArrowRight' : 'ArrowDown')) { me = Math.min(1 - PH / 2, me + 0.08); e.preventDefault(); } });
 btn.addEventListener('click', serve);
 addEventListener('resize', size);
-window.GAME = { refresh() { renderFacts(); panel(); draw(); } };
+window.GAME = { refresh() { renderFacts(); panel(); size(); } };
 size(); window.GAME.refresh();
 })();

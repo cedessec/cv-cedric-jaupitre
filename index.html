@@ -587,6 +587,73 @@ html.lg-refract .hud,html.lg-refract .langsw,html.lg-refract .btn:not(.solid){ba
 .eg-tab.on,.chip.on{background:linear-gradient(160deg,color-mix(in oklab,var(--accent) 30%,rgba(255,255,255,.08)),rgba(255,255,255,.03))!important}
 .langs2 .lang{background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02));box-shadow:inset 0 1px 0 rgba(255,255,255,.28)}
 .flap{background:linear-gradient(rgba(255,255,255,.14) 50%,rgba(255,255,255,.07) 50%);box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+
+/* =========================================================
+   MOBILE (phones & small tablets) — nothing here applies on desktop
+   ========================================================= */
+@media (max-width: 760px){
+  html,body{overflow-x:hidden;max-width:100%}
+  .wrap{padding-left:18px;padding-right:18px}
+  .col,.chapter.col,.wide,.col.full{max-width:100%;min-width:0}
+  #globe,#fx{width:100%}
+  /* nav: everything fits on one line, language switch fully visible */
+  nav{padding:12px 14px;background:rgba(7,8,11,.72);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid rgba(242,237,227,.06)}
+  .navr{gap:0}
+  .logo{gap:8px}
+  .me .logo img{width:36px;height:36px}
+  .logo b{font-size:21px}
+  .langsw{padding:2px}
+  .langsw button{padding:6px 9px;font-size:11px}
+  /* hero */
+  .hero{padding-top:92px;min-height:100svh}
+  .hero h1{font-size:clamp(64px,19vw,96px)}
+  .hero .lede{font-size:16px;max-width:none}
+  .stats{gap:28px}
+  .stats b{font-size:38px}
+  .status{font-size:10px;padding:7px 12px;border-radius:16px}
+  .ctas .btn{padding:12px 18px}
+  /* readable text over the background on phones */
+  .scrim{background:linear-gradient(180deg,rgba(7,8,11,.25),rgba(7,8,11,.55) 55%,rgba(7,8,11,.7))}
+  /* "open to" band: one big line at a time, label above */
+  .ticker{flex-direction:column}
+  .ticker .lab{padding:10px 18px;justify-content:center;border-right:0;border-bottom:1px solid var(--line-strong)}
+  .ticker .view{padding:18px 0}
+  .ticker .track{font-size:28px;animation-duration:34s}
+  .ticker .track>*::after{margin:0 22px}
+  /* chapters */
+  .chapter{min-height:auto;padding:28px 0}
+  .panel{padding:22px 18px;border-radius:22px}
+  .ch-company{font-size:clamp(40px,12vw,56px)}
+  .ch-company small{display:block;margin:6px 0 0}
+  .ch-top{gap:14px;align-items:center}
+  .kpi .num{font-size:64px}
+  .gal .row{max-height:none}
+  /* schools: content column may shrink, photo stays inside its card */
+  .school{grid-template-columns:52px minmax(0,1fr);gap:14px}
+  .school>div{min-width:0}
+  .crest{width:52px;height:52px;border-radius:12px;padding:6px}
+  .school h3{font-size:30px}
+  .shot{width:100%;max-width:100%}
+  .shot img{aspect-ratio:4/3}
+  .school .loc,.school .go{grid-column:2}
+  /* languages accordion */
+  .langs2 .lang.on{height:190px}
+  .langs2 .lg-hello{font-size:44px}
+  /* skills & certificates */
+  .chips{gap:8px}
+  .chip{padding:10px 14px;font-size:14px}
+  .certs{grid-template-columns:1fr}
+  /* HUD: one compact line */
+  .hud{left:auto;right:12px;bottom:12px;gap:10px;padding:6px 12px 6px 8px;font-size:9.5px}
+  .hud #hudCoord{display:none}
+  .flap{width:16px;height:21px;font-size:11px}
+  #cityWord{font-size:34vw}
+  /* mini-game: full width, vertical table */
+  .game{padding:14px}
+  .g-top{font-size:10px}
+  .g-facts{grid-template-columns:1fr}
+  .g-over p{font-size:24px}
+}
 </style>
 <script>
 /* the refraction uses an SVG filter on the backdrop, which only Chromium browsers support */
@@ -935,7 +1002,7 @@ html.lg-refract .hud,html.lg-refract .langsw,html.lg-refract .btn:not(.solid){ba
       <div class="eyebrow reveal" data-i18n="gm.eyebrow">One last rally</div>
       <h2 class="reveal" data-i18n="gm.title">Can you return<br><em>my serve?</em></h2>
       <div class="game panel reveal" data-panel="flat">
-        <div class="g-top"><b id="gScore">Rally 0</b><span data-i18n="gm.how">Move your mouse or finger up and down · or use ↑ ↓</span></div>
+        <div class="g-top"><b id="gScore">Rally 0</b><span data-i18n="gm.how" class="howd">Move your mouse or finger up and down · or use ↑ ↓</span></div>
         <div class="g-wrap"><canvas id="game"></canvas>
           <div class="g-over show" id="gOver"><p id="gMsg"></p><div class="row"><button class="btn solid" id="gBtn">Serve</button><a class="btn" id="gCta" href="#contact" data-i18n="gm.cta" style="display:none">Let's talk →</a></div></div>
         </div>
